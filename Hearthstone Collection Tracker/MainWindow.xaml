@@ -13,7 +13,7 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
             <controls:Flyout x:Name="FlyoutCollection" Position="Right" Panel.ZIndex="102" Header="Collection"
-                             MaxWidth="245">
+                             MaxWidth="245" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
                 <DockPanel LastChildFill="True" Height="Auto">
                     <controls:ToggleSwitch x:Name="ShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
                                            OffLabel="Show all" OnLabel="Show only missing" DockPanel.Dock="Top" />
@@ -120,7 +120,7 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <WrapPanel HorizontalAlignment="Center">
+    <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
         <ItemsControl x:Name="SetStats" Background="DimGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

@@ -255,6 +255,12 @@ namespace Hearthstone_Collection_Tracker
                 Cards = s.SetCards.ToList()
             }).ToList());
         }
+
+        private void FlyoutCollection_OnIsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            MainWrapPanel.HorizontalAlignment = FlyoutCollection.IsOpen
+                ? HorizontalAlignment.Left : HorizontalAlignment.Center;
+        }
     }
 
     internal class CardInCollectionComparer : IComparer
