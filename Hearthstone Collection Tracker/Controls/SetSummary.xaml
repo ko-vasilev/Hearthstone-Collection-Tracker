@@ -29,7 +29,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{Binding PlayerHas}" HorizontalAlignment="Right"/>
                                     <TextBlock Grid.Column="1">/</TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding PlayerHasGolden}" Foreground="Gold" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayerHasGolden}" Foreground="DarkOrange" HorizontalAlignment="Center"/>
                                     <TextBlock Grid.Column="3">/</TextBlock>
                                     <TextBlock Grid.Column="4" Text="{Binding TotalAmount}" HorizontalAlignment="Left"/>
                                 </Grid>
@@ -49,7 +49,7 @@
                                                HorizontalAlignment="Right"/>
                                     <TextBlock Grid.Column="1">/</TextBlock>
                                     <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
-                                               Foreground="Gold" HorizontalAlignment="Left"/>
+                                               Foreground="DarkOrange" HorizontalAlignment="Left"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
