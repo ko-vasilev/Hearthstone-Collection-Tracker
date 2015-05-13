@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hearthstone Collection Tracker", "Hearthstone Collection Tracker\Hearthstone Collection Tracker.csproj", "{14B0D152-BFF1-44EB-B25E-A5DED94E1F95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14B0D152-BFF1-44EB-B25E-A5DED94E1F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14B0D152-BFF1-44EB-B25E-A5DED94E1F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14B0D152-BFF1-44EB-B25E-A5DED94E1F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14B0D152-BFF1-44EB-B25E-A5DED94E1F95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

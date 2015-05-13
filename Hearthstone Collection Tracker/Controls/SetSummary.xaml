@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Hearthstone_Collection_Tracker.Controls.SetSummary"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="250">
+    <UserControl.Resources>
+        <internal:PercentageConverter x:Key="PercentageConverter" />
+    </UserControl.Resources>
+    <GroupBox Header="{Binding SetName}">
+        <StackPanel>
+            <DataGrid IsReadOnly="True" Grid.IsSharedSizeScope="True" ItemsSource="{Binding StatsByRarity}" CanUserAddRows="False"
+                  CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"
+                  CanUserSortColumns="False" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Rarity" Binding="{Binding Rarity}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Card Progress">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasCardsColumn"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasGoldenCardsColumn"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TotalCardsColumn"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding PlayerHas}" HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="1">/</TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayerHasGolden}" Foreground="Gold" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="3">/</TextBlock>
+                                    <TextBlock Grid.Column="4" Text="{Binding TotalAmount}" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Opening Odds">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="NonGoldenOdds"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="GoldenOdds"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding OpenNonGoldenOdds, Converter={StaticResource PercentageConverter}}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="1">/</TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
+                                               Foreground="Gold" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Click="ButtonBase_OnClick">Manage Set Collection</Button>
+        </StackPanel>
+    </GroupBox>
+</UserControl>
