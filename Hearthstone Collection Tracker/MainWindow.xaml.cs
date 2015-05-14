@@ -70,7 +70,6 @@ namespace Hearthstone_Collection_Tracker
             }
             view.CustomSort = new CardInCollectionComparer();
 
-            TextBoxCollectionFilter.Focus();
             FlyoutCollection.IsOpen = true;
         }
 
@@ -258,6 +257,9 @@ namespace Hearthstone_Collection_Tracker
 
         private void FlyoutCollection_OnIsOpenChanged(object sender, RoutedEventArgs e)
         {
+            if (FlyoutCollection.IsOpen)
+                TextBoxCollectionFilter.Focus();
+
             MainWrapPanel.HorizontalAlignment = FlyoutCollection.IsOpen
                 ? HorizontalAlignment.Left : HorizontalAlignment.Center;
         }
