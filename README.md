@@ -18,8 +18,12 @@ To remove card from collection, use right mouse click.
 
 Installation:
 =========
-Save Hearthstone.Collection.Tracker.dll from [release] page to Plugins folder in root of your Hearthstone Deck Tracker.
+Unzip Hearthstone.Collection.Tracker.zip archive from [release] page to Plugins folder in root of your Hearthstone Deck Tracker.
 Then enable it in the Settings menu.
+
+**If after copying the .dll file plugin does not appear in settings menu, go edit properties (right mouse click on dll -> Properties) and click "Unblock" button.**
+
+![Overlay](http://i.imgur.com/QZ7w5nV.png "Unblocking dll")
 
 
 [Hearthstone Deck Tracker]:https://github.com/Epix37/Hearthstone-Deck-Tracker
