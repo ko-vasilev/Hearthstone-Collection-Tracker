@@ -120,7 +120,7 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
+    <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" Name="MainWrapPanel">
         <ItemsControl x:Name="SetStats" Background="DimGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -133,5 +133,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+        <Button Click="BtnImport_OnClick">Import From Clipboard</Button>
+        <Button Click="BtnExport_OnClick">Export To Clipboard</Button>
     </WrapPanel>
 </controls:MetroWindow>
