@@ -269,45 +269,45 @@ namespace Hearthstone_Collection_Tracker
         private void BtnImport_OnClick(object sender, RoutedEventArgs e)
         {
             try
-			{
-			    var sets = SetsInfo.Select(s => new BasicSetCollectionInfo
-			    {
-			        SetName = s.SetName,
-			        Cards = s.SetCards.ToList()
-			    }).ToList();
+            {
+                var sets = SetsInfo.Select(s => new BasicSetCollectionInfo
+                {
+                    SetName = s.SetName,
+                    Cards = s.SetCards.ToList()
+                }).ToList();
 
-				var clipboard = Clipboard.ContainsText() ? Clipboard.GetText() : "";
-				if (string.IsNullOrEmpty(clipboard)) return;
+                var clipboard = Clipboard.ContainsText() ? Clipboard.GetText() : "";
+                if (string.IsNullOrEmpty(clipboard)) return;
                 
-				foreach (var entry in clipboard.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
-				{
-					var splitEntry = entry.Split(':');
-					if (splitEntry.Length != 3) continue;
+                foreach (var entry in clipboard.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var splitEntry = entry.Split(':');
+                    if (splitEntry.Length != 3) continue;
 
-					var card = Game.GetCardFromId(splitEntry[0]);
-				    if (!SetCardsManager.Instance.CollectableSets.Contains(card.Set)) continue;
+                    var card = Game.GetCardFromId(splitEntry[0]);
+                    if (!SetCardsManager.Instance.CollectableSets.Contains(card.Set)) continue;
 
-				    var cardInCollection = sets.SelectMany(s => s.Cards).SingleOrDefault(c => c.CardId == card.Id);
-				    if (cardInCollection != null)
-				    {
-				        int nonGolden, golden;
-				        Int32.TryParse(splitEntry[1], out nonGolden);
-				        Int32.TryParse(splitEntry[2], out golden);
-				        cardInCollection.AmountNonGolden = nonGolden;
-				        cardInCollection.AmountGolden = golden;
-				    }
-				}
+                    var cardInCollection = sets.SelectMany(s => s.Cards).SingleOrDefault(c => c.CardId == card.Id);
+                    if (cardInCollection != null)
+                    {
+                        int nonGolden, golden;
+                        Int32.TryParse(splitEntry[1], out nonGolden);
+                        Int32.TryParse(splitEntry[2], out golden);
+                        cardInCollection.AmountNonGolden = nonGolden;
+                        cardInCollection.AmountGolden = golden;
+                    }
+                }
                 SetCardsManager.Instance.SaveCollection(sets);
                 SetsInfo = sets.Select(set => new SetDetailInfoViewModel
                 {
                     SetName = set.SetName,
                     SetCards = new TrulyObservableCollection<CardInCollection>(set.Cards.ToList())
                 });
-			}
-			catch (Exception)
-			{
-			    this.ShowMessageAsync("Error", "Could not load collection from clipboard");
-			}
+            }
+            catch (Exception)
+            {
+                this.ShowMessageAsync("Error", "Could not load collection from clipboard");
+            }
         }
         
         private async void BtnExport_OnClick(object sender, RoutedEventArgs e)
