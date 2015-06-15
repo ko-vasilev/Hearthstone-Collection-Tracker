@@ -279,6 +279,7 @@ namespace Hearthstone_Collection_Tracker
                 var clipboard = Clipboard.ContainsText() ? Clipboard.GetText() : "";
                 if (string.IsNullOrEmpty(clipboard)) return;
                 
+                var importedCards = new Dictionary<string, Tuple<int, int>>();
                 foreach (var entry in clipboard.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var splitEntry = entry.Split(':');
@@ -286,17 +287,28 @@ namespace Hearthstone_Collection_Tracker
 
                     var card = Game.GetCardFromId(splitEntry[0]);
                     if (!SetCardsManager.Instance.CollectableSets.Contains(card.Set)) continue;
+                    
+                    int nonGolden, golden;
+                    Int32.TryParse(splitEntry[1], out nonGolden);
+                    Int32.TryParse(splitEntry[2], out golden);
+                    importedCards.Add(card.Id, new Tuple<int, int>(nonGolden, golden));
+                }
 
-                    var cardInCollection = sets.SelectMany(s => s.Cards).SingleOrDefault(c => c.CardId == card.Id);
-                    if (cardInCollection != null)
+                foreach (var card in sets.SelectMany(s => s.Cards))
+                {
+                    if (importedCards.ContainsKey(card.CardId))
                     {
-                        int nonGolden, golden;
-                        Int32.TryParse(splitEntry[1], out nonGolden);
-                        Int32.TryParse(splitEntry[2], out golden);
-                        cardInCollection.AmountNonGolden = nonGolden;
-                        cardInCollection.AmountGolden = golden;
+                        var importedCard = importedCards[card.CardId];
+                        card.AmountNonGolden = importedCard.Item1;
+                        card.AmountGolden = importedCard.Item2;
+                    }
+                    else
+                    {
+                        card.AmountNonGolden = 0;
+                        card.AmountGolden = 0;
                     }
                 }
+
                 SetCardsManager.Instance.SaveCollection(sets);
                 SetsInfo = sets.Select(set => new SetDetailInfoViewModel
                 {
