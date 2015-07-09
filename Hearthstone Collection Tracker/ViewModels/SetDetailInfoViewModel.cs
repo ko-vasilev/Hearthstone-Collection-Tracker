@@ -108,6 +108,42 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 { "Legendary", 0.0011 }
             });
 
+        private static readonly ReadOnlyDictionary<string, int> CardCraftValue = new ReadOnlyDictionary<string, int>(
+    new Dictionary<string, int>
+            {
+                { "Common", 40 },
+                { "Rare", 100 },
+                { "Epic", 400 },
+                { "Legendary", 1600 }
+            });
+
+        private static readonly ReadOnlyDictionary<string, int> GoldenCardCraftValue = new ReadOnlyDictionary<string, int>(
+    new Dictionary<string, int>
+            {
+                { "Common", 400 },
+                { "Rare", 800 },
+                { "Epic", 1600 },
+                { "Legendary", 3200 }
+            });
+
+        private static readonly ReadOnlyDictionary<string, int> CardDisenchantValue = new ReadOnlyDictionary<string, int>(
+new Dictionary<string, int>
+            {
+                { "Common", 5 },
+                { "Rare", 20 },
+                { "Epic", 100 },
+                { "Legendary", 400 }
+            });
+
+        private static readonly ReadOnlyDictionary<string, int> GoldenCardDisenchantValue = new ReadOnlyDictionary<string, int>(
+    new Dictionary<string, int>
+            {
+                { "Common", 50 },
+                { "Rare", 100 },
+                { "Epic", 400 },
+                { "Legendary", 1600 }
+            });
+
         public CardStatsByRarity() { }
 
         public CardStatsByRarity(string rarity, IEnumerable<CardInCollection> cards)
@@ -120,6 +156,9 @@ namespace Hearthstone_Collection_Tracker.ViewModels
 
             OpenGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountGolden, GoldenCardProbabilities);
             OpenNonGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, CardProbabilities);
+
+            GoldenExpectedDustValue = CARDS_IN_PACK * CalculatePackDustExpectedValue(cards, card => card.MaxAmountInCollection - card.AmountGolden, false);
+            NonGoldenExpectedDustValue = CARDS_IN_PACK * CalculatePackDustExpectedValue(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, true);
         }
 
         private const int CARDS_IN_PACK = 5;
@@ -135,6 +174,12 @@ namespace Hearthstone_Collection_Tracker.ViewModels
         public double OpenGoldenOdds { get; set; }
 
         public double OpenNonGoldenOdds { get; set; }
+
+        public double NonGoldenExpectedDustValue { get; set; }
+
+        public double GoldenExpectedDustValue { get; set; }
+
+        public double TotalExpectedDustValue { get { return NonGoldenExpectedDustValue + GoldenExpectedDustValue; } }
 
         private double CalculateOpeningOdds(IEnumerable<CardInCollection> cards, Func<CardInCollection, int> cardsAmount, IDictionary<string, double> probabilities)
         {
@@ -154,6 +199,28 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 rarityOdds *= (1 - oddsInPack);
             }
             return 1 - rarityOdds;
+        }
+
+        private double CalculatePackDustExpectedValue(IEnumerable<CardInCollection> cards, Func<CardInCollection, int> cardsAmount, bool nonGoldenCards)
+        {
+            double expectedDustValue = 0.0;
+            foreach (var cardsGroupedByRarity in cards.GroupBy(c => c.Card.Rarity, c => new { card = c, amount = cardsAmount(c) }))
+            {
+                string rarity = cardsGroupedByRarity.Key;
+                double currentProbability = nonGoldenCards ? CardProbabilities[rarity] : GoldenCardProbabilities[rarity];
+
+                int missingCardsAmount = cardsGroupedByRarity.Sum(c => c.amount);
+                int totalCardsAmount = cardsGroupedByRarity.Sum(c => c.card.MaxAmountInCollection);
+
+                double missingCardsOdds = (double) missingCardsAmount / totalCardsAmount;
+                double ownedCardOdds = 1.0 - missingCardsOdds;
+
+                double ownedCardDustValue = nonGoldenCards ? CardDisenchantValue[rarity] : GoldenCardDisenchantValue[rarity];
+                double missingCardDustValue = nonGoldenCards ? CardCraftValue[rarity] : GoldenCardCraftValue[rarity];
+
+                expectedDustValue += currentProbability * (missingCardsOdds * missingCardDustValue + ownedCardOdds * ownedCardDustValue);
+            }
+            return expectedDustValue;
         }
     }
 }
