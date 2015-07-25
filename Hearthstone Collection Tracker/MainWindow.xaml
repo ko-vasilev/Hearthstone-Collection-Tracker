@@ -6,7 +6,7 @@
         xmlns:pluginControls="clr-namespace:Hearthstone_Collection_Tracker.Controls"
         xmlns:DTcontrols="clr-namespace:Hearthstone_Deck_Tracker.Controls;assembly=HearthstoneDeckTracker"
         xmlns:hearthstoneDeckTracker="clr-namespace:Hearthstone_Deck_Tracker;assembly=HearthstoneDeckTracker"
-        Title="Collection Tracker" Width="300" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Title="Collection Tracker" Width="440" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
         DataContext="{Binding RelativeSource={RelativeSource Self}}" SizeToContent="Height"
         ContentRendered="MainWindow_OnContentRendered" Closed="MainWindow_OnClosed">

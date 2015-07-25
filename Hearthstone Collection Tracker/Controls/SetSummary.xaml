@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="250">
+             d:DesignHeight="300" d:DesignWidth="350">
     <UserControl.Resources>
         <internal:PercentageConverter x:Key="PercentageConverter" />
     </UserControl.Resources>
@@ -50,6 +50,29 @@
                                     <TextBlock Grid.Column="1">/</TextBlock>
                                     <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
                                                Foreground="DarkOrange" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Expected Dust Value">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="NonGoldenExpectedDustValue"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="GoldenExpectedDustValue"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TotalExpectedDustValue"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding NonGoldenExpectedDustValue, StringFormat={}{0:N2}}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center">+</TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding GoldenExpectedDustValue, StringFormat={}{0:N2}}"
+                                               HorizontalAlignment="Center" Foreground="DarkOrange"/>
+                                    <TextBlock Grid.Column="3" HorizontalAlignment="Center">=</TextBlock>
+                                    <TextBlock Grid.Column="4" Text="{Binding TotalExpectedDustValue, StringFormat={}{0:N2}}"
+                                               HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
