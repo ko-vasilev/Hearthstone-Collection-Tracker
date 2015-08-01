@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Collection_Tracker.ViewModels;
 using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Hearthstone;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Hearthstone_Collection_Tracker
 {
@@ -262,6 +264,68 @@ namespace Hearthstone_Collection_Tracker
 
             MainWrapPanel.HorizontalAlignment = FlyoutCollection.IsOpen
                 ? HorizontalAlignment.Left : HorizontalAlignment.Center;
+        }
+        
+        private void BtnImport_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var sets = SetsInfo.Select(s => new BasicSetCollectionInfo
+                {
+                    SetName = s.SetName,
+                    Cards = s.SetCards.ToList()
+                }).ToList();
+
+                var clipboard = Clipboard.ContainsText() ? Clipboard.GetText() : "";
+                if (string.IsNullOrEmpty(clipboard)) return;
+                
+                var importedCards = new Dictionary<string, Tuple<int, int>>();
+                foreach (var entry in clipboard.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var splitEntry = entry.Split(':');
+                    if (splitEntry.Length != 3) continue;
+
+                    var card = Game.GetCardFromId(splitEntry[0]);
+                    if (!SetCardsManager.Instance.CollectableSets.Contains(card.Set)) continue;
+                    
+                    int nonGolden, golden;
+                    Int32.TryParse(splitEntry[1], out nonGolden);
+                    Int32.TryParse(splitEntry[2], out golden);
+                    importedCards.Add(card.Id, new Tuple<int, int>(nonGolden, golden));
+                }
+
+                foreach (var card in sets.SelectMany(s => s.Cards))
+                {
+                    if (importedCards.ContainsKey(card.CardId))
+                    {
+                        var importedCard = importedCards[card.CardId];
+                        card.AmountNonGolden = importedCard.Item1;
+                        card.AmountGolden = importedCard.Item2;
+                    }
+                    else
+                    {
+                        card.AmountNonGolden = 0;
+                        card.AmountGolden = 0;
+                    }
+                }
+
+                SetCardsManager.Instance.SaveCollection(sets);
+                SetsInfo = sets.Select(set => new SetDetailInfoViewModel
+                {
+                    SetName = set.SetName,
+                    SetCards = new TrulyObservableCollection<CardInCollection>(set.Cards.ToList())
+                });
+            }
+            catch (Exception)
+            {
+                this.ShowMessageAsync("Error", "Could not load collection from clipboard");
+            }
+        }
+        
+        private async void BtnExport_OnClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(SetsInfo.SelectMany(s => s.SetCards).Where(c => c.AmountNonGolden + c.AmountGolden > 0).Aggregate("", (s, c) => s + String.Format("{0}:{1}:{2};", c.CardId, c.AmountNonGolden, c.AmountGolden)));
+            await this.ShowMessageAsync("", "Copied collection to clipboard");
         }
     }
 

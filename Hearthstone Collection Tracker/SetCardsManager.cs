@@ -11,7 +11,10 @@ namespace Hearthstone_Collection_Tracker
 {
     internal class SetCardsManager
     {
-        private readonly string[] CollectableSets = { "Classic", "Goblins vs Gnomes" };
+        public string[] CollectableSets
+        {
+            get { return new[] { "Classic", "Goblins vs Gnomes" }; }
+        }
 
         private string StorageFilePath
         {
