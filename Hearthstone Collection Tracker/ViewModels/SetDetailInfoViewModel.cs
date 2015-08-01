@@ -19,13 +19,16 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 if (args.PropertyName == "SetCards")
                 {
                     List<CardStatsByRarity> cardStats = SetCards.GroupBy(c => c.Card.Rarity, c => c)
-                        .Select(gr => new CardStatsByRarity(gr.Key, gr.AsEnumerable())).ToList();
+                        .Select(gr => new CardStatsByRarity(gr.Key, gr.AsEnumerable()))
+                        .ToList();
                     TotalSetStats = new CardStatsByRarity("Total", SetCards);
                     cardStats.Add(TotalSetStats);
                     StatsByRarity = cardStats;
                 }
             };
         }
+
+        #region Properties
 
         public string SetName { get; set; }
 
@@ -68,6 +71,8 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             get { return (CardStatsByRarity)GetValue(TotalSetStatsProperty); }
             private set { SetValue(TotalSetStatsProperty, value); }
         }
+
+        #endregion
 
         private void NotifySetCardsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
@@ -148,6 +153,7 @@ new Dictionary<string, int>
 
         public CardStatsByRarity(string rarity, IEnumerable<CardInCollection> cards)
         {
+            _cards = cards;
             Rarity = rarity;
             TotalAmount = cards.Select(c => c.MaxAmountInCollection)
                 .Sum();
@@ -156,9 +162,6 @@ new Dictionary<string, int>
 
             OpenGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountGolden, GoldenCardProbabilities);
             OpenNonGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, CardProbabilities);
-
-            GoldenExpectedDustValue = CARDS_IN_PACK * CalculatePackDustExpectedValue(cards, card => card.MaxAmountInCollection - card.AmountGolden, false);
-            NonGoldenExpectedDustValue = CARDS_IN_PACK * CalculatePackDustExpectedValue(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, true);
         }
 
         private const int CARDS_IN_PACK = 5;
@@ -175,11 +178,48 @@ new Dictionary<string, int>
 
         public double OpenNonGoldenOdds { get; set; }
 
-        public double NonGoldenExpectedDustValue { get; set; }
+        public double AverageDustValue
+        {
+            get
+            {
+                double totalAvgDustValue = 0;
+                foreach (var group in _cards.GroupBy(c => c.Card.Rarity))
+                {
+                    string currentRarity = group.Key;
+                    int maxCardsAmount = group.Sum(c => c.MaxAmountInCollection);
 
-        public double GoldenExpectedDustValue { get; set; }
+                    int havingNonGolden = group.Sum(c => c.AmountNonGolden);
+                    double nonGoldenAverageValue = ((double)havingNonGolden / maxCardsAmount)
+                        * CardDisenchantValue[currentRarity] * CardProbabilities[currentRarity];
 
-        public double TotalExpectedDustValue { get { return NonGoldenExpectedDustValue + GoldenExpectedDustValue; } }
+                    int havingGolden = group.Sum(c => c.AmountGolden);
+                    double goldenAverageValue = ((double)havingGolden / maxCardsAmount)
+                        * GoldenCardDisenchantValue[currentRarity] * GoldenCardProbabilities[currentRarity];
+
+                    totalAvgDustValue += nonGoldenAverageValue + goldenAverageValue;
+                }
+
+                return totalAvgDustValue * CARDS_IN_PACK;
+            }
+        }
+
+        public double CraftNonGoldenDustRequired
+        {
+            get
+            {
+                return CalculateCardsCraftRequiredDust(CardCraftValue, card => card.MaxAmountInCollection - card.AmountNonGolden);
+            }
+        }
+
+        public double CraftGoldenDustRequired
+        {
+            get
+            {
+                return CalculateCardsCraftRequiredDust(GoldenCardCraftValue, card => card.MaxAmountInCollection - card.AmountGolden);
+            }
+        }
+
+        private IEnumerable<CardInCollection> _cards { get; set; }
 
         private double CalculateOpeningOdds(IEnumerable<CardInCollection> cards, Func<CardInCollection, int> cardsAmount, IDictionary<string, double> probabilities)
         {
@@ -201,26 +241,16 @@ new Dictionary<string, int>
             return 1 - rarityOdds;
         }
 
-        private double CalculatePackDustExpectedValue(IEnumerable<CardInCollection> cards, Func<CardInCollection, int> cardsAmount, bool nonGoldenCards)
+        private double CalculateCardsCraftRequiredDust(IDictionary<string, int> cardsCraftValue, Func<CardInCollection, int> missingCardsCount)
         {
-            double expectedDustValue = 0.0;
-            foreach (var cardsGroupedByRarity in cards.GroupBy(c => c.Card.Rarity, c => new { card = c, amount = cardsAmount(c) }))
+            double totalRequiredDust = 0;
+            foreach (var group in _cards.GroupBy(c => c.Card.Rarity))
             {
-                string rarity = cardsGroupedByRarity.Key;
-                double currentProbability = nonGoldenCards ? CardProbabilities[rarity] : GoldenCardProbabilities[rarity];
-
-                int missingCardsAmount = cardsGroupedByRarity.Sum(c => c.amount);
-                int totalCardsAmount = cardsGroupedByRarity.Sum(c => c.card.MaxAmountInCollection);
-
-                double missingCardsOdds = (double) missingCardsAmount / totalCardsAmount;
-                double ownedCardOdds = 1.0 - missingCardsOdds;
-
-                double ownedCardDustValue = nonGoldenCards ? CardDisenchantValue[rarity] : GoldenCardDisenchantValue[rarity];
-                double missingCardDustValue = nonGoldenCards ? CardCraftValue[rarity] : GoldenCardCraftValue[rarity];
-
-                expectedDustValue += currentProbability * (missingCardsOdds * missingCardDustValue + ownedCardOdds * ownedCardDustValue);
+                string currentRarity = group.Key;
+                double missingCards = group.Sum(missingCardsCount);
+                totalRequiredDust += cardsCraftValue[currentRarity] * missingCards;
             }
-            return expectedDustValue;
+            return totalRequiredDust;
         }
     }
 }

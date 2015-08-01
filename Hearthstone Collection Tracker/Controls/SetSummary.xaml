@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="350">
+             d:DesignHeight="300" d:DesignWidth="250">
     <UserControl.Resources>
         <internal:PercentageConverter x:Key="PercentageConverter" />
     </UserControl.Resources>
@@ -54,32 +54,16 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Expected Dust Value">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="NonGoldenExpectedDustValue"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="GoldenExpectedDustValue"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TotalExpectedDustValue"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding NonGoldenExpectedDustValue, StringFormat={}{0:N2}}"
-                                               HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center">+</TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding GoldenExpectedDustValue, StringFormat={}{0:N2}}"
-                                               HorizontalAlignment="Center" Foreground="DarkOrange"/>
-                                    <TextBlock Grid.Column="3" HorizontalAlignment="Center">=</TextBlock>
-                                    <TextBlock Grid.Column="4" Text="{Binding TotalExpectedDustValue, StringFormat={}{0:N2}}"
-                                               HorizontalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Click="ButtonBase_OnClick">Manage Set Collection</Button>
+            <TextBlock Margin="0, 3, 0, 0" Text="{Binding TotalSetStats.AverageDustValue, Mode=OneWay, StringFormat=Average dust value per pack: {0:0}}"></TextBlock>
+            <TextBlock Margin="0, 3, 0, 0">
+                <TextBlock>Dust required to finish collection: </TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.CraftNonGoldenDustRequired}"></TextBlock>
+                <TextBlock> + </TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.CraftGoldenDustRequired}" Foreground="DarkOrange"></TextBlock>
+            </TextBlock>
         </StackPanel>
     </GroupBox>
 </UserControl>
