@@ -68,12 +68,20 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AddAccountWindow.xaml.cs">
+      <DependentUpon>AddAccountWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SetSummary.xaml.cs">
       <DependentUpon>SetSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="HearthstoneCollectionTrackerPlugin.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV02.cs" />
+    <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
+    <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
     <Compile Include="Internal\Helpers.cs" />
+    <Compile Include="Internal\ModuleVersion.cs" />
     <Compile Include="Internal\PercentageConverter.cs" />
+    <Compile Include="Internal\PluginSettings.cs" />
     <Compile Include="Internal\TrulyObservableCollection.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -92,6 +100,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SetCardsManager.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BasicSetCollectionInfo.cs" />
     <Compile Include="ViewModels\CardInCollection.cs" />
     <Compile Include="ViewModels\FilterSettings.cs" />
@@ -108,11 +119,19 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\AddAccountWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SetSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

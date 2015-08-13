@@ -34,7 +34,7 @@ namespace Hearthstone_Collection_Tracker
 
         public MainWindow()
         {
-            SetsInfo = SetCardsManager.Instance.SetCards.Select(set => new SetDetailInfoViewModel
+            SetsInfo = HearthstoneCollectionTrackerPlugin.Settings.ActiveAccountSetsInfo.Select(set => new SetDetailInfoViewModel
             {
                 SetName = set.SetName,
                 SetCards = new TrulyObservableCollection<CardInCollection>(set.Cards.ToList())
@@ -248,7 +248,7 @@ namespace Hearthstone_Collection_Tracker
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            SetCardsManager.Instance.SaveCollection(SetsInfo.Select(s => new BasicSetCollectionInfo
+            HearthstoneCollectionTrackerPlugin.Settings.SaveCurrentAccount(SetsInfo.Select(s => new BasicSetCollectionInfo
             {
                 SetName = s.SetName,
                 Cards = s.SetCards.ToList()

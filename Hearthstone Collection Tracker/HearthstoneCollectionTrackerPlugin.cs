@@ -1,6 +1,5 @@
 ﻿using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Deck_Tracker.Hearthstone;
-using Hearthstone_Deck_Tracker.Plugins;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Diagnostics;
@@ -8,16 +7,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
 
 namespace Hearthstone_Collection_Tracker
 {
-    public class HearthstoneCollectionTrackerPlugin : IPlugin
+    public class HearthstoneCollectionTrackerPlugin : Hearthstone_Deck_Tracker.Plugins.IPlugin
     {
         public void OnLoad()
         {
+            DefaultDataUpdater.PerformUpdates();
+
+            Settings = PluginSettings.LoadSettings(PluginDataDir);
+
             MainMenuItem = new MenuItem
             {
-                Header = ButtonText
+                Header = Name
             };
 
             MainMenuItem.Click += (sender, args) =>
@@ -44,10 +48,14 @@ namespace Hearthstone_Collection_Tracker
                 }
                 _mainWindow = null;
             }
+            Settings.SaveSettings(PluginDataDir);
         }
 
         public void OnButtonPress()
         {
+            SettingsWindow window = new SettingsWindow();
+            window.PluginWindow = _mainWindow;
+            window.Show();
         }
 
         public void OnUpdate()
@@ -71,7 +79,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
 
         public string ButtonText
         {
-            get { return "Collection Tracker"; }
+            get { return "Settings"; }
         }
 
         public string Author
@@ -79,9 +87,11 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return "Vasilev Konstantin"; }
         }
 
+        public static readonly Version PluginVersion = new Version("0.1");
+
         public Version Version
         {
-            get { return new Version("0.1"); }
+            get { return PluginVersion; }
         }
 
         protected MenuItem MainMenuItem { get; set; }
@@ -105,12 +115,14 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return MainMenuItem; }
         }
 
-        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        internal static string PluginDataDir
         {
-            return string.IsNullOrEmpty(name)
-               ? Application.Current.Windows.OfType<T>().Any()
-               : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
+            get { return System.IO.Path.Combine(Hearthstone_Deck_Tracker.Config.Instance.DataDir, "CollectionTracker");  }
         }
+
+        internal static PluginSettings Settings { get; set; }
+
+        #region Auto Update check implementation
 
         private DateTime _lastTimeUpdateChecked = DateTime.MinValue;
 
@@ -167,5 +179,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
                 }
             }
         }
+
+        #endregion
     }
 }

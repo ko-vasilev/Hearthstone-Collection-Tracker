@@ -1,0 +1,35 @@
+﻿<controls:MetroWindow x:Class="Hearthstone_Collection_Tracker.Controls.AddAccountWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hearthstone_Collection_Tracker.Controls"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="Add Account" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Margin="10,5,10,0" Grid.ColumnSpan="2">
+            <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Name="TextboxName" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150">
+                <TextBox.Text>
+                    <Binding Path="AccountName" UpdateSourceTrigger="PropertyChanged"
+                             RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </DockPanel>
+        <Button Grid.Row="1" Margin="10, 5" Click="Add_Click" Name="AddButton" IsDefault="True">Add</Button>
+        <Button Grid.Row="1" Grid.Column="1" Margin="10, 5" Click="Cancel_Click" IsCancel="True">Cancel</Button>
+    </Grid>
+</controls:MetroWindow>

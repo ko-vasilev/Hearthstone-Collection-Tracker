@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Hearthstone_Collection_Tracker.Internal
 {
@@ -33,6 +34,16 @@ namespace Hearthstone_Collection_Tracker.Internal
             {
             }
             return null;
+        }
+
+        public static string GetValidFileName(this string fileName)
+        {
+            StringBuilder initialString = new StringBuilder(fileName);
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+            {
+                initialString = initialString.Replace(c, '_');
+            }
+            return initialString.ToString();
         }
 
         private class GithubRelease
