@@ -13,19 +13,20 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
             <controls:Flyout x:Name="FlyoutCollection" Position="Right" Panel.ZIndex="102" Header="Collection"
-                             MaxWidth="245" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
-                <DockPanel LastChildFill="True" Height="Auto">
-                    <controls:ToggleSwitch x:Name="ShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
-                                           OffLabel="Show all" OnLabel="Show only missing" DockPanel.Dock="Top" />
-                    <controls:ToggleSwitch x:Name="EditingGoldenCollection" IsChecked="{Binding Path=Filter.GoldenCards, Mode=TwoWay}"
-                                           OffLabel="Non-golden" OnLabel="Golden" DockPanel.Dock="Top" />
-                    <TextBox controls:TextBoxHelper.Watermark="Search..." x:Name="TextBoxCollectionFilter"
-                            VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="26"
-                            Margin="3,0,0,0" TextWrapping="NoWrap" Text="{Binding Path=Filter.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            VerticalAlignment="Top" Width="220"
+                             MaxWidth="255" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
+                <Border Margin="5, 5, 0, 0" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
+                    <DockPanel LastChildFill="True" Height="Auto">
+                        <controls:ToggleSwitch x:Name="ShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
+                                           OffLabel="Show all" OnLabel="Show only missing" DockPanel.Dock="Top" Margin="10,5,5,0" />
+                        <controls:ToggleSwitch x:Name="EditingGoldenCollection" IsChecked="{Binding Path=Filter.GoldenCards, Mode=TwoWay}"
+                                           OffLabel="Non-golden" OnLabel="Golden" DockPanel.Dock="Top" Margin="10,5,5,0" />
+                        <TextBox controls:TextBoxHelper.Watermark="Search..." x:Name="TextBoxCollectionFilter"
+                            VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
+                            Margin="10,5,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"
+                            Text="{Binding Path=Filter.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             PreviewKeyDown="TextBoxCollectionFilter_OnPreviewKeyDown" DockPanel.Dock="Top" />
 
-                    <ListView x:Name="CardCollectionEditor" Background="DimGray" Foreground="White"
+                        <ListView x:Name="CardCollectionEditor" Background="DimGray" Foreground="White"
                               FontWeight="Bold" BorderThickness="1"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               ScrollViewer.CanContentScroll="False" FontFamily="Arial" Margin="0,6,0,0"
@@ -34,89 +35,90 @@
                               VirtualizingStackPanel.VirtualizationMode="Recycling"
                               KeyDown="CardCollectionEditor_OnKeyDown" MouseLeftButtonUp="CardCollectionEditor_OnMouseLeftButtonUp"
                               MouseRightButtonUp="CardCollectionEditor_OnMouseRightButtonUp" HorizontalContentAlignment="Left">
-                        <ListView.Style>
-                            <Style TargetType="ListView">
-                                <Style.Triggers>
-                                    <Trigger Property="HasItems" Value="False">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="ListView">
-                                                    <TextBlock Text="No matching cards" FontSize="20"
+                            <ListView.Style>
+                                <Style TargetType="ListView">
+                                    <Style.Triggers>
+                                        <Trigger Property="HasItems" Value="False">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListView">
+                                                        <TextBlock Text="No matching cards" FontSize="20"
                                                                FontFamily="/HearthstoneDeckTracker;component/Resources/#Belwe Bd BT" />
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListView.Style>
-                        <ListView.Resources>
-                            <Style TargetType="GridViewColumnHeader">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Style>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Margin" Value="-4,-3,-3,0"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected"
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Style>
+                            <ListView.Resources>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Margin" Value="-4,-3,-3,0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected"
                                          Value="True">
-                                        <Setter Property="BorderBrush"
+                                            <Setter Property="BorderBrush"
                                             Value="Blue" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Margin" Value="0,0,0,5"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander Header="{Binding Name}" IsExpanded="True"
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Margin" Value="0,0,0,5"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander Header="{Binding Name}" IsExpanded="True"
                                                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                                        <ItemsPresenter />
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </ListView.GroupStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <DTcontrols:Card DataContext="{Binding Card}" Grid.Column="0"></DTcontrols:Card>
-                                    <hearthstoneDeckTracker:OutlinedTextBlock Width="28" Height="25"
+                                                            <ItemsPresenter />
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <DTcontrols:Card DataContext="{Binding Card}" Grid.Column="0"></DTcontrols:Card>
+                                        <hearthstoneDeckTracker:OutlinedTextBlock Width="28" Height="25"
                                          VerticalAlignment="Center" HorizontalAlignment="Right"
                                          Fill="{Binding Path=Card.ColorPlayer}"
                                          FontFamily="/HearthstoneDeckTracker;component/Resources/#Belwe Bd BT"
                                          TextAlignment="Center" FontSize="20" Grid.Column="0" Margin="0, 0, 10, 0">
-                                        <hearthstoneDeckTracker:OutlinedTextBlock.Resources>
-                                            <Style TargetType="hearthstoneDeckTracker:OutlinedTextBlock">
-                                                <Setter Property="Text" Value="{Binding AmountNonGolden}"></Setter>
-                                                <Style.Triggers>
-                                                    <DataTrigger Value="True">
-                                                        <DataTrigger.Binding>
-                                                            <Binding Path="Filter.GoldenCards">
-                                                                <Binding.RelativeSource>
-                                                                    <RelativeSource Mode="FindAncestor" AncestorType="Window">
-                                                                    </RelativeSource>
-                                                                </Binding.RelativeSource>
-                                                            </Binding>
-                                                        </DataTrigger.Binding>
-                                                        <Setter Property="Text" Value="{Binding AmountGolden}"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </hearthstoneDeckTracker:OutlinedTextBlock.Resources>
-                                    </hearthstoneDeckTracker:OutlinedTextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DockPanel>
+                                            <hearthstoneDeckTracker:OutlinedTextBlock.Resources>
+                                                <Style TargetType="hearthstoneDeckTracker:OutlinedTextBlock">
+                                                    <Setter Property="Text" Value="{Binding AmountNonGolden}"></Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <Binding Path="Filter.GoldenCards">
+                                                                    <Binding.RelativeSource>
+                                                                        <RelativeSource Mode="FindAncestor" AncestorType="Window">
+                                                                        </RelativeSource>
+                                                                    </Binding.RelativeSource>
+                                                                </Binding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter Property="Text" Value="{Binding AmountGolden}"></Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </hearthstoneDeckTracker:OutlinedTextBlock.Resources>
+                                        </hearthstoneDeckTracker:OutlinedTextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </DockPanel>
+                </Border>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
