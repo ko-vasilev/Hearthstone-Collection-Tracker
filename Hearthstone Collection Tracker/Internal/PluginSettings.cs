@@ -21,6 +21,8 @@ namespace Hearthstone_Collection_Tracker.Internal
 
         public double CollectionWindowWidth { get; set; }
 
+        public bool DefaultShowAllCards { get; set; }
+
         [NonSerialized]
         [XmlIgnore]
         private IList<BasicSetCollectionInfo> _activeAccountSetsInfo;
@@ -139,7 +141,8 @@ namespace Hearthstone_Collection_Tracker.Internal
                         }
                     },
                     ActiveAccount = "Default",
-                    CollectionWindowWidth = 300
+                    CollectionWindowWidth = 300,
+                    DefaultShowAllCards = false
                 };
             }
 

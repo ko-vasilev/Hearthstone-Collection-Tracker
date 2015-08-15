@@ -48,7 +48,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                         }
                     },
                 ActiveAccount = "Default",
-                CollectionWindowWidth = 300
+                CollectionWindowWidth = 300,
+                DefaultShowAllCards = false
             };
             string settingsFilePath = Path.Combine(HearthstoneCollectionTrackerPlugin.PluginDataDir, "config.xml");
 
@@ -65,6 +66,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public List<AccountSummary> Accounts { get; set; }
 
             public double CollectionWindowWidth { get; set; }
+
+            public bool DefaultShowAllCards { get; set; }
         }
 
         [Serializable]
