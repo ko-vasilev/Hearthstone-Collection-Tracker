@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Hearthstone_Collection_Tracker
 {
@@ -34,7 +35,10 @@ namespace Hearthstone_Collection_Tracker
         private void UpdateAccountsComboBox()
         {
             ComboboxCurrentAccount.ItemsSource = HearthstoneCollectionTrackerPlugin.Settings.Accounts;
+            ComboboxCurrentAccount.Items.Refresh();
             ComboboxCurrentAccount.SelectedValue = HearthstoneCollectionTrackerPlugin.Settings.ActiveAccount;
+
+            ButtonDeleteAccount.IsEnabled = ComboboxCurrentAccount.Items.Count > 1;
         }
 
         private void ButtonAddAccount_Click(object sender, RoutedEventArgs e)
@@ -68,6 +72,34 @@ namespace Hearthstone_Collection_Tracker
 
             string selectedAccountName = (e.AddedItems[0] as AccountSummary).AccountName;
             HearthstoneCollectionTrackerPlugin.Settings.SetActiveAccount(selectedAccountName);
+        }
+
+        private async void ButtonDeleteAccount_Click(object sender, RoutedEventArgs e)
+        {
+            string currentAccountName = HearthstoneCollectionTrackerPlugin.Settings.ActiveAccount;
+            var messageWindowSettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Yes",
+                NegativeButtonText = "No"
+            };
+            var result = await this.ShowMessageAsync("Caution",
+                string.Format("Do you want to delete account {0}?", currentAccountName),
+                MessageDialogStyle.AffirmativeAndNegative,
+                messageWindowSettings);
+
+            if (result != MessageDialogResult.Affirmative)
+            {
+                return;
+            }
+            
+            // close plugin window
+            if (PluginWindow != null && PluginWindow.IsVisible)
+            {
+                PluginWindow.Close();
+            }
+
+            HearthstoneCollectionTrackerPlugin.Settings.DeleteAccount(currentAccountName);
+            UpdateAccountsComboBox();
         }
     }
 }

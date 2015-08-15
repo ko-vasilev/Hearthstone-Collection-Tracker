@@ -23,6 +23,7 @@
                         </ComboBox>
                     </DockPanel>
                     <Button Name="ButtonAddAccount" Margin="10,15,10,0" Content="Add account" Click="ButtonAddAccount_Click" />
+                    <Button Name="ButtonDeleteAccount" Margin="10,15,10,0" Content="Delete current account" Click="ButtonDeleteAccount_Click"/>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

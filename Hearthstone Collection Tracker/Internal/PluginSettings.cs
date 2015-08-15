@@ -36,9 +36,9 @@ namespace Hearthstone_Collection_Tracker.Internal
 
         private const string STORAGE_FILE_NAME = "config.xml";
 
-        public void SetActiveAccount(string accountName)
+        public void SetActiveAccount(string accountName, bool forceReload = false)
         {
-            if (accountName == ActiveAccount)
+            if (accountName == ActiveAccount && !forceReload)
             {
                 return;
             }
@@ -92,6 +92,26 @@ namespace Hearthstone_Collection_Tracker.Internal
             Accounts.Add(newAccount);
         }
 
+        public void DeleteAccount(string accountName)
+        {
+            var account = Accounts.FirstOrDefault(acc => acc.AccountName == accountName);
+            if (account == null)
+            {
+                return;
+            }
+
+            Accounts.Remove(account);
+
+            if (ActiveAccount == accountName && Accounts.Any())
+            {
+                SetActiveAccount(Accounts.First().AccountName);
+            }
+            if (File.Exists(account.FileStoragePath))
+            {
+                File.Delete(account.FileStoragePath);
+            }
+        }
+
         public void SaveCurrentAccount(List<BasicSetCollectionInfo> setsInfo)
         {
             var activeAccount = Accounts.First(acc => acc.AccountName == ActiveAccount);
@@ -125,7 +145,7 @@ namespace Hearthstone_Collection_Tracker.Internal
                 };
             }
 
-            settings.SetActiveAccount(settings.ActiveAccount);
+            settings.SetActiveAccount(settings.ActiveAccount, true);
 
             return settings;
         }
@@ -143,5 +163,18 @@ namespace Hearthstone_Collection_Tracker.Internal
         public string AccountName { get; set; }
 
         public string FileStoragePath { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is AccountSummary) || obj == null)
+                return false;
+            var o = obj as AccountSummary;
+            return AccountName.Equals(o.AccountName) && FileStoragePath.Equals(o.FileStoragePath);
+        }
+
+        public override int GetHashCode()
+        {
+            return AccountName.GetHashCode() + FileStoragePath.GetHashCode();
+        }
     }
 }
