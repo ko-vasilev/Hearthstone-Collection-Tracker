@@ -21,8 +21,6 @@ namespace Hearthstone_Collection_Tracker.Internal
 
         public double CollectionWindowWidth { get; set; }
 
-        public double CollectionWindowHeight { get; set; }
-
         [NonSerialized]
         [XmlIgnore]
         private IList<BasicSetCollectionInfo> _activeAccountSetsInfo;

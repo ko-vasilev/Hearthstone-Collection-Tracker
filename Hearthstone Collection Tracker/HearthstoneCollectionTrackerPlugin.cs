@@ -103,8 +103,10 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             if (_mainWindow == null)
             {
                 _mainWindow = new MainWindow();
+                _mainWindow.Width = Settings.CollectionWindowWidth;
                 _mainWindow.Closed += (sender, args) =>
                 {
+                    Settings.CollectionWindowWidth = _mainWindow.Width;
                     _mainWindow = null;
                 };
             }

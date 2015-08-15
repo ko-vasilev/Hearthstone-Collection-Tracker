@@ -65,8 +65,6 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public List<AccountSummary> Accounts { get; set; }
 
             public double CollectionWindowWidth { get; set; }
-
-            public double CollectionWindowHeight { get; set; }
         }
 
         [Serializable]
