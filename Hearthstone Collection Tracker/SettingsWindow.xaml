@@ -5,8 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hearthstone_Collection_Tracker"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300">
+        Title="Settings" Width="350" Height="300">
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:SettingsWindow}}">
+            <controls:Flyout Name="FlyoutImport" Position="Right" Panel.ZIndex="102" Header="Collection Import" Height="auto"
+                             Width="{Binding Width, RelativeSource={RelativeSource AncestorType=local:SettingsWindow}}">
+                <StackPanel>
+                    <TextBlock Margin="5,5,10,0" Padding="5, 0, 0, 0">
+                        <TextBlock FontWeight="Bold">Warning!</TextBlock>
+                        <TextBlock> Current account's collection will be cleared.</TextBlock>
+                    </TextBlock>
+                    <DockPanel Margin="5,5,10,0">
+                        <Label Content="Speed:" />
+                        <ComboBox Name="ComboboxImportSpeed" SelectedIndex="1"
+                                                  HorizontalAlignment="Right" Width="150">
+                            <ComboBoxItem Tag="60">Fast (60ms)</ComboBoxItem>
+                            <ComboBoxItem Tag="100">Normal (100ms)</ComboBoxItem>
+                            <ComboBoxItem Tag="150">Slow (150ms)</ComboBoxItem>
+                        </ComboBox>
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,5,0,0" >
+                        <Label Content="Wait" />
+                        <TextBox x:Name="TextboxImportDelay" 
+                                             HorizontalAlignment="Right" Height="23" HorizontalContentAlignment="Center"
+                                             TextWrapping="Wrap" Text="0" VerticalAlignment="Top"
+                                             Width="27" TextChanged="TextboxImportDelay_TextChanged" PreviewTextInput="TextboxImportDelay_PreviewTextInput"/>
+                        <Label Content="seconds before starting" />
+                    </StackPanel>
+                    <CheckBox x:Name="CheckboxPrioritizeFullCollection"
+                              Content="Prioritize filling non-golden cards"
+                              ToolTip="For example, if checked: if you have 1 Wrath and 1 Golden Wrath, it will be imported as 2 Wrarths and 0 Golden Wraths"
+                              HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="CheckboxImportPasteClipboard"
+                              Content="Paste names from clipboard"
+                              ToolTip="Try this if you have problems with importing - May not work with all keyboard layouts"
+                              HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                    <Button Name="ButtonImportFromGame" Margin="10,15,10,0" Click="ButtonImportFromGame_Click">Start Import From Game</Button>
+                </StackPanel>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
     <Grid>
         <GroupBox Header="Account settings">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -24,6 +64,7 @@
                     </DockPanel>
                     <Button Name="ButtonAddAccount" Margin="10,15,10,0" Content="Add account" Click="ButtonAddAccount_Click" />
                     <Button Name="ButtonDeleteAccount" Margin="10,15,10,0" Content="Delete current account" Click="ButtonDeleteAccount_Click"/>
+                    <Button Name="ButtonImport" Margin="10,15,10,0" Content="Import" Click="ButtonImport_Click" />
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

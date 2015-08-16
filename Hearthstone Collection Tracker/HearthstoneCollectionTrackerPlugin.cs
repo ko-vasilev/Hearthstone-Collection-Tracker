@@ -48,14 +48,33 @@ namespace Hearthstone_Collection_Tracker
                 }
                 _mainWindow = null;
             }
+            if (_settingsWindow != null)
+            {
+                if (_settingsWindow.IsVisible)
+                {
+                    _settingsWindow.Close();
+                }
+                _settingsWindow = null;
+            }
             Settings.SaveSettings(PluginDataDir);
         }
 
         public void OnButtonPress()
         {
-            SettingsWindow window = new SettingsWindow();
-            window.PluginWindow = _mainWindow;
-            window.Show();
+            if (_settingsWindow == null)
+            {
+                _settingsWindow = new SettingsWindow();
+                _settingsWindow.PluginWindow = _mainWindow;
+                _settingsWindow.Closed += (sender, args) =>
+                {
+                    _settingsWindow = null;
+                };
+                _settingsWindow.Show();
+            }
+            else
+            {
+                _settingsWindow.Activate();
+            }
         }
 
         public void OnUpdate()
@@ -97,6 +116,8 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
         protected MenuItem MainMenuItem { get; set; }
 
         protected static MainWindow _mainWindow;
+
+        protected SettingsWindow _settingsWindow;
 
         protected void InitializeMainWindow()
         {

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
+using System.Drawing;
 
 namespace Hearthstone_Collection_Tracker.Internal
 {
@@ -50,6 +51,50 @@ namespace Hearthstone_Collection_Tracker.Internal
         {
             [JsonProperty("tag_name")]
             public string TagName { get; set; }
+        }
+
+        public static double GetAvgHue(this Bitmap bmp, double saturationThreshold = 0.05)
+        {
+            var totalHue = 0.0f;
+            var validPixels = 0;
+            for (var i = 0; i < bmp.Width; i++)
+            {
+                for (var j = 0; j < bmp.Height; j++)
+                {
+                    var pixel = bmp.GetPixel(i, j);
+
+                    //ignore sparkle
+                    if (pixel.GetSaturation() > saturationThreshold)
+                    {
+                        totalHue += pixel.GetHue();
+                        validPixels++;
+                    }
+                }
+            }
+
+            return totalHue / validPixels;
+        }
+
+        public static double GetAvgBrightness(this Bitmap bmp, double saturationThreshold = 0.05)
+        {
+            var totalBrightness = 0.0f;
+            var validPixels = 0;
+            for (var i = 0; i < bmp.Width; i++)
+            {
+                for (var j = 0; j < bmp.Height; j++)
+                {
+                    var pixel = bmp.GetPixel(i, j);
+
+                    //ignore sparkle
+                    if (pixel.GetSaturation() > saturationThreshold)
+                    {
+                        totalBrightness += pixel.GetBrightness();
+                        validPixels++;
+                    }
+                }
+            }
+
+            return totalBrightness / validPixels;
         }
     }
 }
