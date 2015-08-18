@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Hearthstone_Collection_Tracker
 {
@@ -36,6 +38,57 @@ namespace Hearthstone_Collection_Tracker
                     _mainWindow.Activate();
                 }
             };
+
+            Hearthstone_Deck_Tracker.API.DeckManagerEvents.OnDeckCreated.Add(HandleHearthstoneDeckUpdated);
+            Hearthstone_Deck_Tracker.API.DeckManagerEvents.OnDeckUpdated.Add(HandleHearthstoneDeckUpdated);
+        }
+
+        private void HandleHearthstoneDeckUpdated(Deck deck)
+        {
+            if (deck == null || !Settings.NotifyNewDeckMissingCards)
+                return;
+
+            if (deck.IsArenaDeck)
+                return;
+
+            List<Tuple<Card, int>> missingCards = new List<Tuple<Card, int>>();
+
+            foreach (var deckCard in deck.Cards)
+            {
+                var cardSet = Settings.ActiveAccountSetsInfo.FirstOrDefault(set => set.SetName == deckCard.Set);
+                if (cardSet == null)
+                {
+                    continue;
+                }
+                var collectionCard = cardSet.Cards.FirstOrDefault(c => c.CardId == deckCard.Id);
+                if (collectionCard == null)
+                {
+                    continue;
+                }
+
+                int missingAmount = Math.Max(0, deckCard.Count - (collectionCard.AmountGolden + collectionCard.AmountNonGolden));
+                if (missingAmount > 0)
+                {
+                    missingCards.Add(new Tuple<Card, int>(deckCard, missingAmount));
+                }
+            }
+
+            if (missingCards.Any())
+            {
+                StringBuilder alertSB = new StringBuilder();
+                foreach (var gr in missingCards.GroupBy(c => c.Item1.Set))
+                {
+                    alertSB.AppendFormat("{0} set:", gr.Key);
+                    alertSB.AppendLine();
+                    foreach(var card in gr)
+                    {
+                        alertSB.AppendFormat("  • {0} ({1});", card.Item1.LocalizedName, card.Item2);
+                        alertSB.AppendLine();
+                    }
+                }
+                alertSB.Append("You can disable this alert in Collection Tracker plugin settings.");
+                Hearthstone_Deck_Tracker.Helper.MainWindow.ShowMessageAsync("Missing cards in collection", alertSB.ToString());
+            }
         }
 
         public void OnUnload()
@@ -63,7 +116,7 @@ namespace Hearthstone_Collection_Tracker
         {
             if (_settingsWindow == null)
             {
-                _settingsWindow = new SettingsWindow();
+                _settingsWindow = new SettingsWindow(Settings);
                 _settingsWindow.PluginWindow = _mainWindow;
                 _settingsWindow.Closed += (sender, args) =>
                 {

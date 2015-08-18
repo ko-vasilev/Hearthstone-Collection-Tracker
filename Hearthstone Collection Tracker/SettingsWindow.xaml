@@ -47,7 +47,7 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <Grid>
+    <StackPanel>
         <GroupBox Header="Account settings">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
@@ -68,5 +68,9 @@
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>
-    </Grid>
+        <CheckBox x:Name="CheckboxNotifyMissingCards" IsChecked="{Binding Path=Settings.NotifyNewDeckMissingCards, Mode=TwoWay}"
+                  Content="Notify on missing cards"
+                  ToolTip="Alert when deck is created with missing cards in current collection"
+                  HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+    </StackPanel>
 </controls:MetroWindow>

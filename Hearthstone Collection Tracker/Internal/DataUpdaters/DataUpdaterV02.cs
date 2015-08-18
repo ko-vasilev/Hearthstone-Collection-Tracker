@@ -49,7 +49,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                     },
                 ActiveAccount = "Default",
                 CollectionWindowWidth = 300,
-                DefaultShowAllCards = false
+                DefaultShowAllCards = false,
+                NotifyNewDeckMissingCards = true
             };
             string settingsFilePath = Path.Combine(HearthstoneCollectionTrackerPlugin.PluginDataDir, "config.xml");
 
@@ -68,6 +69,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public double CollectionWindowWidth { get; set; }
 
             public bool DefaultShowAllCards { get; set; }
+
+            public bool NotifyNewDeckMissingCards { get; set; }
         }
 
         [Serializable]

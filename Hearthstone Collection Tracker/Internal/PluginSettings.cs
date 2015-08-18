@@ -23,6 +23,8 @@ namespace Hearthstone_Collection_Tracker.Internal
 
         public bool DefaultShowAllCards { get; set; }
 
+        public bool NotifyNewDeckMissingCards { get; set; }
+
         [NonSerialized]
         [XmlIgnore]
         private IList<BasicSetCollectionInfo> _activeAccountSetsInfo;
