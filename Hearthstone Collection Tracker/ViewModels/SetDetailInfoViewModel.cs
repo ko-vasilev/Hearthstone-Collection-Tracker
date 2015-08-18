@@ -227,15 +227,10 @@ new Dictionary<string, int>
             foreach (var group in cards.GroupBy(c => c.Card.Rarity, c => new { card = c, amount = cardsAmount(c) }))
             {
                 double currentProbability = probabilities[group.Key];
-                int missingCardsAmount = group.Sum(c => c.amount);
-                int totalCardsAmount = group.Sum(c => c.card.MaxAmountInCollection);
+                int missingCardsAmount = group.Sum(c => Math.Min(1, c.amount));
+                int totalCardsAmount = group.Count();
                 double missingCardsOdds = (double)missingCardsAmount / totalCardsAmount;
-                double openingCardOdds = 1.0;
-                for (int i = 0; i < CARDS_IN_PACK; ++i)
-                {
-                    openingCardOdds *= 1 - currentProbability * missingCardsOdds;
-                }
-                double oddsInPack = 1 - openingCardOdds;
+                double oddsInPack = 1 - Math.Pow(1 - currentProbability * missingCardsOdds, CARDS_IN_PACK);
                 rarityOdds *= (1 - oddsInPack);
             }
             return 1 - rarityOdds;
