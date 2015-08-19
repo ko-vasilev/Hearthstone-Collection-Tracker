@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
+        Icon="Internal\HSCollection.ico"
         Title="Settings" Width="350" Height="300">
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:SettingsWindow}}">

@@ -10,6 +10,9 @@ using System.Windows.Controls;
 using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Hearthstone_Collection_Tracker
 {
@@ -21,9 +24,20 @@ namespace Hearthstone_Collection_Tracker
 
             Settings = PluginSettings.LoadSettings(PluginDataDir);
 
+            // initialize image for icon
+            var img = new Image();
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.UriSource = new Uri(@"pack://application:,,,/HearthstoneCollectionTracker;component/Internal/HSCollection.ico", UriKind.RelativeOrAbsolute);
+            bmp.EndInit();
+
+            img.Source = bmp;
+            img.Width = bmp.PixelWidth;
+
             MainMenuItem = new MenuItem
             {
-                Header = Name
+                Header = Name,
+                Icon = img
             };
 
             MainMenuItem.Click += (sender, args) =>

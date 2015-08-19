@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Hearthstone_Collection_Tracker.Controls"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
+        Icon="..\Internal\HSCollection.ico"
         Title="Add Account" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
