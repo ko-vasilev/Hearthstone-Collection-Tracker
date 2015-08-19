@@ -46,6 +46,19 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                         }
                     }
                 }
+                // add TGT cards
+                const string TGTSet = "The Grand Tournament";
+                oldSetInfo.Add(new BasicSetCollectionInfo()
+                {
+                    SetName = TGTSet,
+                    Cards = cards.Where(c => c.Set == TGTSet).Select(c => new CardInCollection()
+                    {
+                        AmountGolden = 0,
+                        AmountNonGolden = 0,
+                        CardId = c.Id,
+                        DesiredAmount = c.Rarity == "Legendary" ? 1 : 2
+                    }).ToList()
+                });
                 Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Save(newCollectionFilePath, oldSetInfo);
                 File.Delete(oldCollectionFilePath);
             }
