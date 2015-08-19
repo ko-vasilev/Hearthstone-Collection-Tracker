@@ -36,6 +36,22 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Desired">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasDesiredCardsColumn"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TotalDesiredCardsColumn"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding PlayerHasDesired}" HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="1">/</TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding TotalDesiredAmount}" HorizontalAlignment="Left"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Opening Odds">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -44,12 +60,17 @@
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="NonGoldenOdds"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="GoldenOdds"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="DesiredOdds"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{Binding OpenNonGoldenOdds, Converter={StaticResource PercentageConverter}}"
-                                               HorizontalAlignment="Right"/>
+                                               HorizontalAlignment="Right" ToolTip="Non-golden cards" />
                                     <TextBlock Grid.Column="1">/</TextBlock>
                                     <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
-                                               Foreground="DarkOrange" HorizontalAlignment="Left"/>
+                                               Foreground="DarkOrange" HorizontalAlignment="Center" ToolTip="Golden cards" />
+                                    <TextBlock Grid.Column="3">/</TextBlock>
+                                    <TextBlock Grid.Column="4" Text="{Binding OpenDesiredOdds, Converter={StaticResource PercentageConverter}}"
+                                               HorizontalAlignment="Left" ToolTip="Desired cards"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -57,7 +78,11 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Button Click="ButtonBase_OnClick">Manage Set Collection</Button>
-            <TextBlock Margin="0, 3, 0, 0" Text="{Binding TotalSetStats.AverageDustValue, Mode=OneWay, StringFormat=Average dust value per pack: {0:0}}"></TextBlock>
+            <TextBlock Margin="0, 3, 0, 0">
+                <TextBlock>Average dust value per pack: </TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.AverageDustValue, StringFormat={}{0:0}}"></TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.AverageDustValueNonDesired, StringFormat= ({0:0})}" ToolTip="If disenchanting not desired cards"></TextBlock>
+            </TextBlock>
             <TextBlock Margin="0, 3, 0, 0">
                 <TextBlock>Dust required to finish collection: </TextBlock>
                 <TextBlock Text="{Binding TotalSetStats.CraftNonGoldenDustRequired}"></TextBlock>

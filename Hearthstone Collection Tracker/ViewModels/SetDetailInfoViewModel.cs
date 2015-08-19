@@ -95,6 +95,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
 
     public class CardStatsByRarity
     {
+        #region Static cards info
         private static readonly ReadOnlyDictionary<string, double> CardProbabilities = new ReadOnlyDictionary<string, double>(
             new Dictionary<string, double>
             {
@@ -111,6 +112,18 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 { "Rare", 0.0138 },
                 { "Epic", 0.0031 },
                 { "Legendary", 0.0011 }
+            });
+
+        /// <summary>
+        /// contains info for both golden and non-golden cards
+        /// </summary>
+        private static readonly ReadOnlyDictionary<string, double> AllCardProbabilitiesByRarity = new ReadOnlyDictionary<string, double>(
+            new Dictionary<string, double>
+            {
+                { "Common", 0.7143 },
+                { "Rare", 0.2278 },
+                { "Epic", 0.046 },
+                { "Legendary", 0.0119 }
             });
 
         private static readonly ReadOnlyDictionary<string, int> CardCraftValue = new ReadOnlyDictionary<string, int>(
@@ -148,25 +161,42 @@ new Dictionary<string, int>
                 { "Epic", 400 },
                 { "Legendary", 1600 }
             });
+        #endregion
 
-        public CardStatsByRarity() { }
+        public CardStatsByRarity()
+        {
+            TotalDesiredAmount = 0;
+            TotalAmount = 0;
+            PlayerHas = 0;
+            PlayerHasGolden = 0;
+            PlayerHasDesired = 0;
+        }
 
         public CardStatsByRarity(string rarity, IEnumerable<CardInCollection> cards)
+            : this()
         {
             _cards = cards;
             Rarity = rarity;
-            TotalAmount = cards.Select(c => c.MaxAmountInCollection)
-                .Sum();
-            PlayerHas = cards.Sum(c => c.AmountNonGolden);
-            PlayerHasGolden = cards.Sum(c => c.AmountGolden);
+
+            foreach(var card in cards)
+            {
+                TotalDesiredAmount += card.DesiredAmount;
+                TotalAmount += card.MaxAmountInCollection;
+                PlayerHas += card.AmountNonGolden;
+                PlayerHasGolden += card.AmountGolden;
+                PlayerHasDesired += Math.Min(card.AmountGolden + card.AmountNonGolden, card.DesiredAmount);
+            }
 
             OpenGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountGolden, GoldenCardProbabilities);
             OpenNonGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, CardProbabilities);
+            OpenDesiredOdds = CalculateOpeningOdds(cards, card => Math.Max(0, card.DesiredAmount - (card.AmountGolden + card.AmountNonGolden)), AllCardProbabilitiesByRarity);
         }
 
         private const int CARDS_IN_PACK = 5;
 
         public string Rarity { get; set; }
+
+        public int TotalDesiredAmount { get; set; }
 
         public int TotalAmount { get; set; }
 
@@ -174,9 +204,13 @@ new Dictionary<string, int>
 
         public int PlayerHasGolden { get; set; }
 
+        public int PlayerHasDesired { get; set; }
+
         public double OpenGoldenOdds { get; set; }
 
         public double OpenNonGoldenOdds { get; set; }
+
+        public double OpenDesiredOdds { get; set; }
 
         public double AverageDustValue
         {
@@ -194,6 +228,29 @@ new Dictionary<string, int>
 
                     int havingGolden = group.Sum(c => c.AmountGolden);
                     double goldenAverageValue = ((double)havingGolden / maxCardsAmount)
+                        * GoldenCardDisenchantValue[currentRarity] * GoldenCardProbabilities[currentRarity];
+
+                    totalAvgDustValue += nonGoldenAverageValue + goldenAverageValue;
+                }
+
+                return totalAvgDustValue * CARDS_IN_PACK;
+            }
+        }
+
+        public double AverageDustValueNonDesired
+        {
+            get
+            {
+                double totalAvgDustValue = 0;
+                foreach(var group in _cards.GroupBy(c => c.Card.Rarity))
+                {
+                    string currentRarity = group.Key;
+                    int maxCardsAmount = group.Sum(c => c.MaxAmountInCollection);
+
+                    int disenchantingCards = group.Sum(c => Math.Min(c.AmountGolden + c.AmountNonGolden + (c.MaxAmountInCollection - c.DesiredAmount), c.MaxAmountInCollection));
+                    double nonGoldenAverageValue = ((double)disenchantingCards / maxCardsAmount)
+                        * CardDisenchantValue[currentRarity] * CardProbabilities[currentRarity];
+                    double goldenAverageValue = ((double)disenchantingCards / maxCardsAmount)
                         * GoldenCardDisenchantValue[currentRarity] * GoldenCardProbabilities[currentRarity];
 
                     totalAvgDustValue += nonGoldenAverageValue + goldenAverageValue;

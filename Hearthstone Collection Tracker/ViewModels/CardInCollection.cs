@@ -1,6 +1,8 @@
 ﻿using Hearthstone_Deck_Tracker.Hearthstone;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
@@ -15,6 +17,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             Card = card;
             AmountNonGolden = amountNonGolden;
             AmountGolden = amountGolden;
+            DesiredAmount = MaxAmountInCollection;
         }
 
         [XmlIgnore]
@@ -51,6 +54,26 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 if (Card == null)
                     throw new ArgumentNullException();
                 return Card.Rarity == "Legendary" ? 1 : 2;
+            }
+        }
+
+        private int _desiredAmount;
+
+        public int DesiredAmount
+        {
+            get { return _desiredAmount; }
+            set
+            {
+                _desiredAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<int> DesiredAmountOptions
+        {
+            get
+            {
+                return Enumerable.Range(0, MaxAmountInCollection + 1);
             }
         }
 

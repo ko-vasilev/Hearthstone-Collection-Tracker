@@ -13,7 +13,7 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
             <controls:Flyout x:Name="FlyoutCollection" Position="Right" Panel.ZIndex="102" Header="Collection"
-                             MaxWidth="255" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
+                             MaxWidth="285" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
                 <Border Margin="5, 5, 0, 0" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                     <DockPanel LastChildFill="True" Height="Auto">
                         <controls:ToggleSwitch x:Name="ShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
@@ -88,6 +88,10 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
                                         <DTcontrols:Card DataContext="{Binding Card}" Grid.Column="0"></DTcontrols:Card>
                                         <hearthstoneDeckTracker:OutlinedTextBlock Width="28" Height="25"
                                          VerticalAlignment="Center" HorizontalAlignment="Right"
@@ -113,6 +117,10 @@
                                                 </Style>
                                             </hearthstoneDeckTracker:OutlinedTextBlock.Resources>
                                         </hearthstoneDeckTracker:OutlinedTextBlock>
+                                        <ComboBox Grid.Column="1" Width="20" SelectedItem="{Binding DesiredAmount, Mode=TwoWay}" Height="25"
+                                                  ToolTip="Desired amount in collection"
+                                                  ItemsSource="{Binding DesiredAmountOptions, Mode=OneTime}">
+                                        </ComboBox>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -123,7 +131,7 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
-        <ItemsControl x:Name="SetStats" Background="DimGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
+        <ItemsControl x:Name="SetStats" Background="DarkGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <pluginControls:SetSummary ManageSetClicked="EditCollection" />

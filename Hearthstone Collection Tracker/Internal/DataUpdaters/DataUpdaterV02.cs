@@ -33,7 +33,21 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             string newCollectionFilePath = Path.Combine(HearthstoneCollectionTrackerPlugin.PluginDataDir, "Collection_Default.xml");
             if (File.Exists(oldCollectionFilePath))
             {
-                File.Move(oldCollectionFilePath, newCollectionFilePath);
+                List<BasicSetCollectionInfo> oldSetInfo = Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Load(oldCollectionFilePath);
+                var cards = Hearthstone_Deck_Tracker.Hearthstone.Game.GetActualCards();
+                foreach (var set in oldSetInfo)
+                {
+                    foreach (var card in set.Cards)
+                    {
+                        var originalCard = cards.FirstOrDefault(c => c.Id == card.CardId);
+                        if (originalCard != null)
+                        {
+                            card.DesiredAmount = originalCard.Rarity == "Legendary" ? 1 : 2;
+                        }
+                    }
+                }
+                Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Save(newCollectionFilePath, oldSetInfo);
+                File.Delete(oldCollectionFilePath);
             }
 
             PluginSettings settings = new PluginSettings()
@@ -48,7 +62,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                         }
                     },
                 ActiveAccount = "Default",
-                CollectionWindowWidth = 300,
+                CollectionWindowWidth = 385,
                 DefaultShowAllCards = false,
                 NotifyNewDeckMissingCards = true
             };
@@ -79,6 +93,24 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public string AccountName { get; set; }
 
             public string FileStoragePath { get; set; }
+        }
+
+        public class BasicSetCollectionInfo
+        {
+            public string SetName { get; set; }
+
+            public List<CardInCollection> Cards { get; set; }
+        }
+
+        public class CardInCollection
+        {
+            public int AmountNonGolden { get; set; }
+
+            public int AmountGolden { get; set; }
+
+            public int DesiredAmount { get; set; }
+
+            public string CardId { get; set; }
         }
     }
 }

@@ -143,7 +143,7 @@ namespace Hearthstone_Collection_Tracker.Internal
                         }
                     },
                     ActiveAccount = "Default",
-                    CollectionWindowWidth = 300,
+                    CollectionWindowWidth = 385,
                     DefaultShowAllCards = false
                 };
             }
