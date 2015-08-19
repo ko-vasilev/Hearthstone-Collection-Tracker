@@ -41,6 +41,9 @@ namespace Hearthstone_Collection_Tracker
             UpdateAccountsComboBox();
 
             this.DataContext = this;
+            var setsOption = SetCardsManager.CollectableSets.Select(s => new KeyValuePair<string, string>(s, s)).ToList();
+            setsOption.Insert(0, new KeyValuePair<string, string>("All", null));
+            ComboboxImportingSet.ItemsSource = setsOption;
         }
 
         private void UpdateAccountsComboBox()
@@ -168,13 +171,25 @@ namespace Hearthstone_Collection_Tracker
 
             try
             {
-                var deck = await importObject.Import(TimeSpan.FromSeconds(int.Parse(TextboxImportDelay.Text)));
+                var selectedSetToImport = ((KeyValuePair<string, string>)ComboboxImportingSet.SelectedItem).Value;
+                var collection = await importObject.Import(TimeSpan.FromSeconds(int.Parse(TextboxImportDelay.Text)), selectedSetToImport);
                 // close plugin window
                 if (PluginWindow != null && PluginWindow.IsVisible)
                 {
                     PluginWindow.Close();
                 }
-                Settings.ActiveAccountSetsInfo = deck;
+                foreach(var set in collection)
+                {
+                    var existingSet = Settings.ActiveAccountSetsInfo.FirstOrDefault(s => s.SetName == set.SetName);
+                    if (existingSet == null)
+                    {
+                        Settings.ActiveAccountSetsInfo.Add(existingSet);
+                    }
+                    else
+                    {
+                        existingSet.Cards = set.Cards;
+                    }
+                }
                 this.ShowMessageAsync("Import succeed", "Your collection is successfully imported from Hearthstone!");
             }
             catch (ImportingException ex)

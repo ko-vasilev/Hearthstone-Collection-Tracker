@@ -15,8 +15,13 @@
                 <StackPanel>
                     <TextBlock Margin="5,5,10,0" Padding="5, 0, 0, 0">
                         <TextBlock FontWeight="Bold">Warning!</TextBlock>
-                        <TextBlock> Current account's collection will be cleared.</TextBlock>
+                        <TextBlock> Current account's selected set will be cleared.</TextBlock>
                     </TextBlock>
+                    <DockPanel Margin="5,5,10,0">
+                        <Label Content="Importing set:" />
+                        <ComboBox Name="ComboboxImportingSet" HorizontalAlignment="Right" Width="150" SelectedIndex="0" DisplayMemberPath="Key">
+                        </ComboBox>
+                    </DockPanel>
                     <DockPanel Margin="5,5,10,0">
                         <Label Content="Speed:" />
                         <ComboBox Name="ComboboxImportSpeed" SelectedIndex="1"

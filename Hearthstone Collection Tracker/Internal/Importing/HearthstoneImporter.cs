@@ -29,9 +29,18 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
         public bool NonGoldenFirst { get; set; }
 
-        public async Task<List<BasicSetCollectionInfo>> Import(TimeSpan delayBeforeImport)
+        public async Task<List<BasicSetCollectionInfo>> Import(TimeSpan delayBeforeImport, string importingSet)
         {
             var sets = SetCardsManager.CreateEmptyCollection();
+            if (!string.IsNullOrEmpty(importingSet))
+            {
+                sets = sets.Where(s => s.SetName == importingSet).ToList();
+            }
+
+            if (!sets.Any())
+            {
+                return sets;
+            }
 
             try
             {
@@ -168,7 +177,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             SendKeys.SendWait("{ENTER}");
 
             Logger.WriteLine("try to import card: " + card.Name, LOGGER_CATEGORY, 1);
-            await Task.Delay(ImportStepDelay * 2);
+            await Task.Delay(ImportStepDelay * 3);
 
             Tuple<int, int> result;
             int posX = (int)cardPosX;
