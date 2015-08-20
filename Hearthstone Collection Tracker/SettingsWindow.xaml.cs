@@ -122,32 +122,6 @@ namespace Hearthstone_Collection_Tracker
             FlyoutImport.IsOpen = true;
         }
 
-        private void TextboxImportDelay_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int importStartDelay;
-            if (int.TryParse(TextboxImportDelay.Text, out importStartDelay))
-            {
-                if (importStartDelay < 0)
-                {
-                    TextboxImportDelay.Text = "0";
-                }
-                else if (importStartDelay > 60)
-                {
-                    TextboxImportDelay.Text = "60";
-                }
-            }
-            else
-            {
-                TextboxImportDelay.Text = "0";
-            }
-        }
-
-        private void TextboxImportDelay_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!char.IsDigit(e.Text, e.Text.Length - 1))
-                e.Handled = true;
-        }
-
         private async void ButtonImportFromGame_Click(object sender, RoutedEventArgs e)
         {
             const string message = "1) open My Collection in Hearthstone\n2) clear card filters\n3) do not move your mouse or type after clicking \"Import\"";
@@ -172,7 +146,7 @@ namespace Hearthstone_Collection_Tracker
             try
             {
                 var selectedSetToImport = ((KeyValuePair<string, string>)ComboboxImportingSet.SelectedItem).Value;
-                var collection = await importObject.Import(TimeSpan.FromSeconds(int.Parse(TextboxImportDelay.Text)), selectedSetToImport);
+                var collection = await importObject.Import(selectedSetToImport);
                 // close plugin window
                 if (PluginWindow != null && PluginWindow.IsVisible)
                 {

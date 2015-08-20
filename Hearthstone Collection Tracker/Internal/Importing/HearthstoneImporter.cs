@@ -29,7 +29,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
         public bool NonGoldenFirst { get; set; }
 
-        public async Task<List<BasicSetCollectionInfo>> Import(TimeSpan delayBeforeImport, string importingSet)
+        public async Task<List<BasicSetCollectionInfo>> Import(string importingSet)
         {
             var sets = SetCardsManager.CreateEmptyCollection();
             if (!string.IsNullOrEmpty(importingSet))
@@ -62,8 +62,8 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
                     throw new ImportingException("Can't find Hearthstone window.");
                 }
 
-                Logger.WriteLine("Waiting for " + delayBeforeImport.TotalSeconds + " seconds before starting the collection import", LOGGER_CATEGORY);
-                await Task.Delay(delayBeforeImport);
+                Logger.WriteLine("Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LOGGER_CATEGORY);
+                await Task.Delay(ImportStepDelay * 3);
 
                 var hsRect = User32.GetHearthstoneRect(false);
                 WindowXRatioTo1920 = (double)hsRect.Width / 1920;

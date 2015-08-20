@@ -32,14 +32,6 @@
                             <ComboBoxItem Tag="150">Slow (150ms)</ComboBoxItem>
                         </ComboBox>
                     </DockPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5,5,0,0" >
-                        <Label Content="Wait" />
-                        <TextBox x:Name="TextboxImportDelay" 
-                                             HorizontalAlignment="Right" Height="23" HorizontalContentAlignment="Center"
-                                             TextWrapping="Wrap" Text="0" VerticalAlignment="Top"
-                                             Width="27" TextChanged="TextboxImportDelay_TextChanged" PreviewTextInput="TextboxImportDelay_PreviewTextInput"/>
-                        <Label Content="seconds before starting" />
-                    </StackPanel>
                     <CheckBox x:Name="CheckboxPrioritizeFullCollection"
                               Content="Prioritize filling non-golden cards"
                               ToolTip="For example, if checked: if you have 1 Wrath and 1 Golden Wrath, it will be imported as 2 Wrarths and 0 Golden Wraths"
