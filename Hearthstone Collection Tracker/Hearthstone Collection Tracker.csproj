@@ -81,6 +81,7 @@
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
     <Compile Include="Internal\Helpers.cs" />
+    <Compile Include="Internal\IgnoreMouseWheelBehavior.cs" />
     <Compile Include="Internal\Importing\HearthstoneImporter.cs" />
     <Compile Include="Internal\Importing\ImportingException.cs" />
     <Compile Include="Internal\ModuleVersion.cs" />

@@ -75,7 +75,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                         }
                     },
                 ActiveAccount = "Default",
-                CollectionWindowWidth = 385,
+                CollectionWindowWidth = 395,
+                CollectionWindowHeight = 560,
                 DefaultShowAllCards = false,
                 NotifyNewDeckMissingCards = true
             };
@@ -94,6 +95,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public List<AccountSummary> Accounts { get; set; }
 
             public double CollectionWindowWidth { get; set; }
+
+            public double CollectionWindowHeight { get; set; }
 
             public bool DefaultShowAllCards { get; set; }
 

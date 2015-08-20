@@ -21,6 +21,8 @@ namespace Hearthstone_Collection_Tracker.Internal
 
         public double CollectionWindowWidth { get; set; }
 
+        public double CollectionWindowHeight { get; set; }
+
         public bool DefaultShowAllCards { get; set; }
 
         public bool NotifyNewDeckMissingCards { get; set; }
@@ -143,7 +145,8 @@ namespace Hearthstone_Collection_Tracker.Internal
                         }
                     },
                     ActiveAccount = "Default",
-                    CollectionWindowWidth = 385,
+                    CollectionWindowWidth = 395,
+                    CollectionWindowHeight = 560,
                     DefaultShowAllCards = false
                 };
             }

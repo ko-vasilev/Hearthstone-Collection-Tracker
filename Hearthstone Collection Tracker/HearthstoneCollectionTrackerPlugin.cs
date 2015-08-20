@@ -192,10 +192,12 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             {
                 _mainWindow = new MainWindow();
                 _mainWindow.Width = Settings.CollectionWindowWidth;
+                _mainWindow.Height = Settings.CollectionWindowHeight;
                 _mainWindow.Filter.OnlyMissing = !Settings.DefaultShowAllCards;
                 _mainWindow.Closed += (sender, args) =>
                 {
                     Settings.CollectionWindowWidth = _mainWindow.Width;
+                    Settings.CollectionWindowHeight = _mainWindow.Height;
                     if (_mainWindow.Filter != null)
                     {
                         Settings.DefaultShowAllCards = !_mainWindow.Filter.OnlyMissing;

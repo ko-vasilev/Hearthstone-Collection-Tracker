@@ -9,7 +9,7 @@
         Title="Collection Tracker" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Icon="Internal\HSCollection.ico"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}" SizeToContent="Height"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         ContentRendered="MainWindow_OnContentRendered" Closed="MainWindow_OnClosed">
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
@@ -131,18 +131,20 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
-        <ItemsControl x:Name="SetStats" Background="DarkGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <pluginControls:SetSummary ManageSetClicked="EditCollection" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-    </WrapPanel>
+    <ScrollViewer Margin="0, 0, 2, 0">
+        <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
+            <ItemsControl x:Name="SetStats" Background="DarkGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <pluginControls:SetSummary ManageSetClicked="EditCollection" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </WrapPanel>
+    </ScrollViewer>    
 </controls:MetroWindow>

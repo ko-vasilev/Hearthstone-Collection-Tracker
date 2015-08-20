@@ -40,6 +40,7 @@ namespace Hearthstone_Collection_Tracker
                 SetCards = new TrulyObservableCollection<CardInCollection>(set.Cards.ToList())
             });
 
+            this.MaxHeight = SystemParameters.PrimaryScreenHeight;
             InitializeComponent();
 
             Filter = new FilterSettings();
