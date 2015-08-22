@@ -280,17 +280,19 @@ new Dictionary<string, int>
 
         private double CalculateOpeningOdds(IEnumerable<CardInCollection> cards, Func<CardInCollection, int> cardsAmount, IDictionary<string, double> probabilities)
         {
-            double rarityOdds = 1.0;
+            double oddsForAllRaritites = 0.0;
             foreach (var group in cards.GroupBy(c => c.Card.Rarity, c => new { card = c, amount = cardsAmount(c) }))
             {
                 double currentProbability = probabilities[group.Key];
                 int missingCardsAmount = group.Sum(c => Math.Min(1, c.amount));
                 int totalCardsAmount = group.Count();
                 double missingCardsOdds = (double)missingCardsAmount / totalCardsAmount;
-                double oddsInPack = 1 - Math.Pow(1 - currentProbability * missingCardsOdds, CARDS_IN_PACK);
-                rarityOdds *= (1 - oddsInPack);
+
+                oddsForAllRaritites += currentProbability * missingCardsOdds;
             }
-            return 1 - rarityOdds;
+
+            double resultOdds = 1 - Math.Pow(1 - oddsForAllRaritites, CARDS_IN_PACK);
+            return resultOdds;
         }
 
         private double CalculateCardsCraftRequiredDust(IDictionary<string, int> cardsCraftValue, Func<CardInCollection, int> missingCardsCount)
