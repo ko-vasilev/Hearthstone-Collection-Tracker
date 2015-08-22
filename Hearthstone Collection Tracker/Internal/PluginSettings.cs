@@ -154,6 +154,13 @@ namespace Hearthstone_Collection_Tracker.Internal
             return settings;
         }
 
+        public void RenameCurrentAccount(string newName)
+        {
+            var account = Accounts.First(a => a.AccountName == ActiveAccount);
+            account.AccountName = newName;
+            ActiveAccount = newName;
+        }
+
         public void SaveSettings(string dataDir)
         {
             string settingsFilePath = Path.Combine(dataDir, STORAGE_FILE_NAME);
@@ -174,11 +181,6 @@ namespace Hearthstone_Collection_Tracker.Internal
                 return false;
             var o = obj as AccountSummary;
             return AccountName.Equals(o.AccountName) && FileStoragePath.Equals(o.FileStoragePath);
-        }
-
-        public override int GetHashCode()
-        {
-            return AccountName.GetHashCode() + FileStoragePath.GetHashCode();
         }
     }
 }

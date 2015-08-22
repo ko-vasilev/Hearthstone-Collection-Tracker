@@ -7,14 +7,18 @@ It allows to keep track on cards you have in collection and shows which type of 
 
 Main plugin window:
 
-![Overlay](http://i.imgur.com/iOiZHrB.png "Main window")
+![Overlay](https://i.imgur.com/P6nuKbB.png "Main window")
 
 Collection editor:
 
-![Overlay](http://i.imgur.com/0seMdit.png "Collection editor")
+![Overlay](https://i.imgur.com/UcRm66E.png "Collection editor")
 
 To add a card into collection, use left mouse click. Clicking Enter in "Search..." text box will add in collection the first card.
 To remove card from collection, use right mouse click.
+
+Plugin settings window (access through HDT options -> Plugins -> Collection Tracker -> Settings (at the bottom of window)):
+
+![Overlay](https://i.imgur.com/8vlF28f.png "HCT Settings")
 
 Installation:
 =========

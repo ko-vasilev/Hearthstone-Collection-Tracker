@@ -10,9 +10,9 @@ namespace Hearthstone_Collection_Tracker.Controls
     /// <summary>
     /// Interaction logic for AddAccountWindow.xaml
     /// </summary>
-    public partial class AddAccountWindow : MetroWindow, IDataErrorInfo
+    public partial class EditAccountWindow : MetroWindow, IDataErrorInfo
     {
-        public AddAccountWindow()
+        public EditAccountWindow()
         {
             ExistingAccounts = new List<string>();
 
@@ -20,6 +20,7 @@ namespace Hearthstone_Collection_Tracker.Controls
 
             this.AddHandler(Validation.ErrorEvent, new RoutedEventHandler(OnErrorEvent));
 
+            TextboxName.Text = AccountName ?? "";
             TextboxName.Focus();
         }
 
@@ -33,7 +34,7 @@ namespace Hearthstone_Collection_Tracker.Controls
             Close();
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
             Close();
@@ -61,7 +62,7 @@ namespace Hearthstone_Collection_Tracker.Controls
                         throw new Exception("Unknown action");
                     }
             }
-            AddButton.IsEnabled = errorCount == 0;
+            SaveButton.IsEnabled = errorCount == 0;
         }
 
         public string Error

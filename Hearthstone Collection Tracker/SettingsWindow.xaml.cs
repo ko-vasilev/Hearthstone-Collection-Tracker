@@ -39,7 +39,11 @@ namespace Hearthstone_Collection_Tracker
 
         private void UpdateAccountsComboBox()
         {
-            ComboboxCurrentAccount.ItemsSource = Settings.Accounts;
+            ComboboxCurrentAccount.Items.Clear();
+            foreach (var acc in Settings.Accounts)
+            {
+                ComboboxCurrentAccount.Items.Add(acc);
+            }
             ComboboxCurrentAccount.Items.Refresh();
             ComboboxCurrentAccount.SelectedValue = Settings.ActiveAccount;
 
@@ -48,7 +52,7 @@ namespace Hearthstone_Collection_Tracker
 
         private void ButtonAddAccount_Click(object sender, RoutedEventArgs e)
         {
-            AddAccountWindow window = new AddAccountWindow();
+            EditAccountWindow window = new EditAccountWindow();
             window.Owner = this;
             window.ExistingAccounts = Settings.Accounts.Select(acc => acc.AccountName).ToList();
             if (window.ShowDialog() == true)
@@ -172,6 +176,23 @@ namespace Hearthstone_Collection_Tracker
             Topmost = true;
             Topmost = false;
             Focus();
+        }
+
+        private void ButtonEditAccount_Click(object sender, RoutedEventArgs e)
+        {
+            EditAccountWindow window = new EditAccountWindow();
+            window.Owner = this;
+            window.ExistingAccounts = Settings.Accounts
+                                              .Where(ac => ac.AccountName != Settings.ActiveAccount)
+                                              .Select(acc => acc.AccountName)
+                                              .ToList();
+            window.AccountName = Settings.ActiveAccount;
+            if (window.ShowDialog() == true)
+            {
+                Settings.RenameCurrentAccount(window.AccountName);
+
+                UpdateAccountsComboBox();
+            }
         }
     }
 }

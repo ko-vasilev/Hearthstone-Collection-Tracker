@@ -9,6 +9,13 @@
         mc:Ignorable="d"
         Icon="Internal\HSCollection.ico"
         Title="Settings" Width="350" Height="300">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/HearthstoneDeckTracker;component/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:SettingsWindow}}">
             <controls:Flyout Name="FlyoutImport" Position="Right" Panel.ZIndex="102" Header="Collection Import" Height="auto"
@@ -49,17 +56,34 @@
         <GroupBox Header="Account settings">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <DockPanel Margin="10,5,10,0">
-                        <Label Content="Current account:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                        <ComboBox x:Name="ComboboxCurrentAccount" HorizontalAlignment="Right" SelectionChanged="ComboboxCurrentAccount_SelectionChanged"
-                                                  VerticalAlignment="Top" Width="150" SelectedValuePath="AccountName">
+                    <Grid Margin="10,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Current account:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <ComboBox Grid.Column="1" x:Name="ComboboxCurrentAccount" HorizontalAlignment="Right"
+                                  SelectionChanged="ComboboxCurrentAccount_SelectionChanged"
+                                  VerticalAlignment="Top" Width="150" SelectedValuePath="AccountName">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding AccountName}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </DockPanel>
+                        <Button Grid.Column="2" Name="ButtonEditAccount" ToolTip="Edit"
+                                Click="ButtonEditAccount_Click" Width="24" HorizontalAlignment="Right" Height="24"
+                                Margin="5, 0, 0, 0" Padding="0">
+                            <Button.Content>
+                                <Rectangle Width="16" Height="16">
+                                    <Rectangle.Fill>
+                                        <VisualBrush Visual="{StaticResource appbar_edit}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
                     <Button Name="ButtonAddAccount" Margin="10,15,10,0" Content="Add account" Click="ButtonAddAccount_Click" />
                     <Button Name="ButtonDeleteAccount" Margin="10,15,10,0" Content="Delete current account" Click="ButtonDeleteAccount_Click"/>
                     <Button Name="ButtonImport" Margin="10,15,10,0" Content="Import From Hearthstone" Click="ButtonImport_Click" />

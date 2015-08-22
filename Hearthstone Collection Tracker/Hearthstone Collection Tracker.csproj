@@ -74,8 +74,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AddAccountWindow.xaml.cs">
-      <DependentUpon>AddAccountWindow.xaml</DependentUpon>
+    <Compile Include="Controls\EditAccountWindow.xaml.cs">
+      <DependentUpon>EditAccountWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PluginMenuItem.xaml.cs">
       <DependentUpon>PluginMenuItem.xaml</DependentUpon>
@@ -131,7 +131,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\AddAccountWindow.xaml">
+    <Page Include="Controls\EditAccountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
