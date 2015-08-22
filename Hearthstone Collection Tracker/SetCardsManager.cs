@@ -4,7 +4,6 @@ using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Hearthstone_Collection_Tracker

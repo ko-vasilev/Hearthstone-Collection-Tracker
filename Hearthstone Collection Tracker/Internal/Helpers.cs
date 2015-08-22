@@ -1,10 +1,9 @@
-﻿
+﻿using Newtonsoft.Json;
 using System;
-using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Text;
 using System.Drawing;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Hearthstone_Collection_Tracker.Internal
 {

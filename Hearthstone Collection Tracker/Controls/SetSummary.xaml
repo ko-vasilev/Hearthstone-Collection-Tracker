@@ -31,11 +31,12 @@
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="TotalCardsColumn"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding PlayerHas}" HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding PlayerHas}" HorizontalAlignment="Right" ToolTip="Non-Golden"/>
                                     <TextBlock Grid.Column="1">/</TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding PlayerHasGolden}" Foreground="DarkOrange" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding PlayerHasGolden}" Foreground="DarkOrange" HorizontalAlignment="Center"
+                                               ToolTip="Golden"/>
                                     <TextBlock Grid.Column="3">/</TextBlock>
-                                    <TextBlock Grid.Column="4" Text="{Binding TotalAmount}" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding TotalAmount}" HorizontalAlignment="Left" ToolTip="Total"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -68,13 +69,13 @@
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="DesiredOdds"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{Binding OpenNonGoldenOdds, Converter={StaticResource PercentageConverter}}"
-                                               HorizontalAlignment="Right" ToolTip="Non-golden cards" />
+                                               HorizontalAlignment="Right" ToolTip="Non-Golden" />
                                     <TextBlock Grid.Column="1">/</TextBlock>
                                     <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
-                                               Foreground="DarkOrange" HorizontalAlignment="Center" ToolTip="Golden cards" />
+                                               Foreground="DarkOrange" HorizontalAlignment="Center" ToolTip="Golden" />
                                     <TextBlock Grid.Column="3">/</TextBlock>
                                     <TextBlock Grid.Column="4" Text="{Binding OpenDesiredOdds, Converter={StaticResource PercentageConverter}}"
-                                               HorizontalAlignment="Left" ToolTip="Desired cards"/>
+                                               HorizontalAlignment="Left" ToolTip="Desired"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -85,7 +86,8 @@
             <TextBlock Margin="0, 3, 0, 0">
                 <TextBlock>Average dust value per pack: </TextBlock>
                 <TextBlock Text="{Binding TotalSetStats.AverageDustValue, StringFormat={}{0:0}}"></TextBlock>
-                <TextBlock Text="{Binding TotalSetStats.AverageDustValueNonDesired, StringFormat= ({0:0})}" ToolTip="If disenchanting not desired cards"></TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.AverageDustValueNonDesired, StringFormat= ({0:0})}"
+                           ToolTip="If disenchanting not desired cards"></TextBlock>
             </TextBlock>
             <TextBlock Margin="0, 3, 0, 0">
                 <TextBlock>Dust required to finish collection: </TextBlock>

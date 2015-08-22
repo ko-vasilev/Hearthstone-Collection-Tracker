@@ -1,13 +1,12 @@
 ﻿using Hearthstone_Collection_Tracker.ViewModels;
+using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Hearthstone;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hearthstone_Deck_Tracker;
 using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Hearthstone_Deck_Tracker.Hearthstone;
 
 namespace Hearthstone_Collection_Tracker.Internal.Importing
 {

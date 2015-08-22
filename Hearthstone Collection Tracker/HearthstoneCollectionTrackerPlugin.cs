@@ -1,17 +1,14 @@
 ﻿using Hearthstone_Collection_Tracker.Internal;
+using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
-using System.Collections.Generic;
 using System.Text;
-using System.Windows.Shapes;
-using System.Windows.Media;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace Hearthstone_Collection_Tracker
