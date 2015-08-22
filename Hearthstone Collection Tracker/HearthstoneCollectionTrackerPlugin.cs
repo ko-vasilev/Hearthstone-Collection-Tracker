@@ -1,4 +1,5 @@
-﻿using Hearthstone_Collection_Tracker.Internal;
+﻿using Hearthstone_Collection_Tracker.Controls;
+using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Collection_Tracker.Internal.DataUpdaters;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using MahApps.Metro.Controls.Dialogs;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace Hearthstone_Collection_Tracker
 {
@@ -21,22 +21,8 @@ namespace Hearthstone_Collection_Tracker
 
             Settings = PluginSettings.LoadSettings(PluginDataDir);
 
-            // initialize image for icon
-            var img = new Image();
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.UriSource = new Uri(@"pack://application:,,,/HearthstoneCollectionTracker;component/Internal/HSCollection.ico", UriKind.RelativeOrAbsolute);
-            bmp.EndInit();
-
-            img.Source = bmp;
-            img.Width = bmp.PixelWidth;
-
-            MainMenuItem = new MenuItem
-            {
-                Header = Name,
-                Icon = img
-            };
-
+            MainMenuItem = new PluginMenuItem();
+            MainMenuItem.Header = Name;
             MainMenuItem.Click += (sender, args) =>
             {
                 if (_mainWindow == null)
