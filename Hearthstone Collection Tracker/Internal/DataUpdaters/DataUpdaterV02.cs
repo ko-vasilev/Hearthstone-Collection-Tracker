@@ -32,7 +32,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             if (File.Exists(oldCollectionFilePath))
             {
                 List<BasicSetCollectionInfo> oldSetInfo = Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Load(oldCollectionFilePath);
-                var cards = Hearthstone_Deck_Tracker.Hearthstone.Game.GetActualCards();
+                var cards = Hearthstone_Deck_Tracker.Hearthstone.GameV2.GetActualCards();
                 foreach (var set in oldSetInfo)
                 {
                     foreach (var card in set.Cards)

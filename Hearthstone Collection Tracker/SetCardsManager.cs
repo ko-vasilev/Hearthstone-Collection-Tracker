@@ -20,7 +20,7 @@ namespace Hearthstone_Collection_Tracker
                 var setInfos = XmlManager<List<BasicSetCollectionInfo>>.Load(collectionStoragePath);
                 if (setInfos != null)
                 {
-                    var cards = Game.GetActualCards();
+                    var cards = GameV2.GetActualCards();
                     collection = setInfos;
                     foreach (var setCollection in collection)
                     {
@@ -42,7 +42,7 @@ namespace Hearthstone_Collection_Tracker
 
         public static List<BasicSetCollectionInfo> CreateEmptyCollection()
         {
-            var cards = Game.GetActualCards();
+            var cards = GameV2.GetActualCards();
             var setCards = CollectableSets.Select(set => new BasicSetCollectionInfo()
             {
                 SetName = set,

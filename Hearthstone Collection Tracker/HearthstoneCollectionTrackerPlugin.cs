@@ -226,7 +226,8 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
 
             if (_hasUpdates)
             {
-                if (!Game.IsRunning && _mainWindow != null && !_showingUpdateMessage)
+                var gameIsRunning = Hearthstone_Deck_Tracker.API.Core.Game != null && Hearthstone_Deck_Tracker.API.Core.Game.IsRunning;
+                if (!gameIsRunning && _mainWindow != null && !_showingUpdateMessage)
                 {
                     _showingUpdateMessage = true;
                     const string releaseDownloadUrl = @"https://github.com/ko-vasilev/Hearthstone-Collection-Tracker/releases/latest";
