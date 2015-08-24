@@ -56,7 +56,7 @@
         <GroupBox Header="Account settings">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <Grid Margin="10,5,0,0">
+                    <Grid Margin="10,5,10,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
