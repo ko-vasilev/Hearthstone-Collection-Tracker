@@ -156,7 +156,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return "Vasilev Konstantin"; }
         }
 
-        public static readonly Version PluginVersion = new Version(0, 2);
+        public static readonly Version PluginVersion = new Version(0, 2, 1);
 
         public Version Version
         {
