@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="HearthstoneCollectionTrackerPlugin.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV02.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV022.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV021.cs" />
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />

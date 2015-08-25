@@ -8,7 +8,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
         private static IEnumerable<IDataUpdater> _updaters = new List<IDataUpdater>()
         {
             new DataUpdaterV02(),
-            new DataUpdaterV021()
+            new DataUpdaterV021(),
+            new DataUpdaterV022()
         };
 
         /// <summary>
