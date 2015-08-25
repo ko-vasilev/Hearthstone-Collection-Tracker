@@ -80,15 +80,17 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
                     foreach (var card in set.Cards)
                     {
                         var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
-                        card.AmountNonGolden = amount.Item1;
-                        card.AmountGolden = amount.Item2;
-                        if (NonGoldenFirst && card.AmountNonGolden < 2 && card.AmountGolden > 0)
+                        int amountNonGolden = amount.Item1;
+                        int amountGolden = amount.Item2;
+                        if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
                         {
-                            int missing = 2 - card.AmountNonGolden;
-                            int transferAmount = Math.Min(card.AmountGolden, missing);
-                            card.AmountGolden -= transferAmount;
-                            card.AmountNonGolden += transferAmount;
+                            int missing = card.MaxAmountInCollection - amountNonGolden;
+                            int transferAmount = Math.Min(amountGolden, missing);
+                            amountGolden -= transferAmount;
+                            amountNonGolden += transferAmount;
                         }
+                        card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
+                        card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
                     }
                 }
             }
