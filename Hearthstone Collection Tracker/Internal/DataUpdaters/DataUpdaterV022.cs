@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
 {
@@ -70,9 +68,23 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                 {
                     TGTSet.Cards = TGTSet.Cards.Where(c => c.CardId != DreadscaleCardId).ToList();
                     TGTSet.Cards.Add(dreadScaleCards.First());
-
-                    Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Save(account.FileStoragePath, setsInfo);
                 }
+
+                // remove more than 1 copy of legendary
+                var gameCards = Hearthstone_Deck_Tracker.Hearthstone.GameV2.GetActualCards();
+                foreach(var set in setsInfo)
+                {
+                    foreach(var card in set.Cards)
+                    {
+                        if (gameCards.First(c => c.Id == card.CardId).Rarity != "Legendary")
+                            continue;
+
+                        card.AmountGolden = Math.Min(card.AmountGolden, 1);
+                        card.AmountNonGolden = Math.Min(card.AmountNonGolden, 1);
+                    }
+                }
+
+                Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Save(account.FileStoragePath, setsInfo);
             }
             settings.CurrentVersion = new ModuleVersion(_version);
             Hearthstone_Deck_Tracker.XmlManager<PluginSettings>.Save(configFilePath, settings);
