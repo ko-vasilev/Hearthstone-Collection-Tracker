@@ -50,20 +50,20 @@ namespace Hearthstone_Collection_Tracker.Internal
                                 {
                                     if (quality == standard)
                                     {
-                                        if (amount < cardInCollection.AmountNonGolden)
+                                        if (amount != cardInCollection.AmountNonGolden)
                                         {
                                             int oldAmount = cardInCollection.AmountNonGolden;
                                             cardInCollection.AmountNonGolden = amount;
-                                            Logger.WriteLine(string.Format("Hearthstone Collection Tracker: set amount of {0} ({1}) from {2} to {3}", card.Name, quality.ToLower(), oldAmount, amount));
+                                            Logger.WriteLine(string.Format("set amount of {0} ({1}) from {2} to {3}", card.Name, quality.ToLower(), oldAmount, amount), "Hearthstone Collection Tracker");
                                         }
                                     }
                                     else if (quality == golden)
                                     {
-                                        if (amount < cardInCollection.AmountGolden)
+                                        if (amount != cardInCollection.AmountGolden)
                                         {
                                             int oldAmount = cardInCollection.AmountGolden;
                                             cardInCollection.AmountGolden = amount;
-                                            Logger.WriteLine(string.Format("Hearthstone Collection Tracker: set amount of {0} ({1}) from {2} to {3}", card.Name, quality.ToLower(), oldAmount, amount));
+                                            Logger.WriteLine(string.Format("set amount of {0} ({1}) from {2} to {3}", card.Name, quality.ToLower(), oldAmount, amount), "Hearthstone Collection Tracker");
                                         }
                                     }
                                     else
