@@ -84,6 +84,9 @@
       <DependentUpon>SetSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="HearthstoneCollectionTrackerPlugin.cs" />
+    <Compile Include="Internal\AchievementHandler.cs" />
+    <Compile Include="Internal\AchievementLogManager.cs" />
+    <Compile Include="Internal\AchievementLogReader.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV02.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV022.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV021.cs" />
