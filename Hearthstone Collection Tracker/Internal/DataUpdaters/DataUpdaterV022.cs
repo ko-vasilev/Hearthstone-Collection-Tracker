@@ -71,7 +71,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                 }
 
                 // remove more than 1 copy of legendary
-                var gameCards = Hearthstone_Deck_Tracker.Hearthstone.GameV2.GetActualCards();
+                var gameCards = Hearthstone_Deck_Tracker.Hearthstone.Database.GetActualCards();
                 foreach(var set in setsInfo)
                 {
                     foreach(var card in set.Cards)

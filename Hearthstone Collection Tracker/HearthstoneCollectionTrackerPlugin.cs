@@ -84,7 +84,7 @@ namespace Hearthstone_Collection_Tracker
                     }
                 }
                 alertSB.Append("You can disable this alert in Collection Tracker plugin settings.");
-                Hearthstone_Deck_Tracker.Helper.MainWindow.ShowMessageAsync("Missing cards in collection", alertSB.ToString());
+                Hearthstone_Deck_Tracker.Core.MainWindow.ShowMessageAsync("Missing cards in collection", alertSB.ToString());
             }
         }
 
@@ -156,7 +156,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return "Vasilev Konstantin"; }
         }
 
-        public static readonly Version PluginVersion = new Version(0, 2, 2);
+        public static readonly Version PluginVersion = new Version(0, 2, 3);
 
         public Version Version
         {

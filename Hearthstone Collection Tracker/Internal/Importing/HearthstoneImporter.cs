@@ -114,14 +114,14 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
         private void HideHDTOverlay()
         {
-            Helper.MainWindow.Overlay.ForceHidden = true;
-            Helper.MainWindow.Overlay.UpdatePosition();
+            Hearthstone_Deck_Tracker.API.Core.OverlayWindow.ForceHidden = true;
+            Hearthstone_Deck_Tracker.API.Core.OverlayWindow.UpdatePosition();
         }
 
         private void ShowHDTOverlay()
         {
-            Helper.MainWindow.Overlay.ForceHidden = false;
-            Helper.MainWindow.Overlay.UpdatePosition();
+            Hearthstone_Deck_Tracker.API.Core.OverlayWindow.ForceHidden = false;
+            Hearthstone_Deck_Tracker.API.Core.OverlayWindow.UpdatePosition();
         }
 
         private static double GetXPos(double left, int width, double ratio)
