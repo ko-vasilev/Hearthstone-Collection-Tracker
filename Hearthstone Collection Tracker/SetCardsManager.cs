@@ -10,7 +10,7 @@ namespace Hearthstone_Collection_Tracker
 {
     internal static class SetCardsManager
     {
-        public static readonly string[] CollectableSets = { "Classic", "Goblins vs Gnomes", "The Grand Tournament" };
+        public static readonly string[] CollectableSets = { "Classic", "Curse of Naxxramas", "Goblins vs Gnomes", "Blackrock Mountain", "The Grand Tournament" };
 
         public static List<BasicSetCollectionInfo> LoadSetsInfo(string collectionStoragePath)
         {
