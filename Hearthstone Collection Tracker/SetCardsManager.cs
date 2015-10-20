@@ -14,6 +14,9 @@ namespace Hearthstone_Collection_Tracker
 
         public static List<BasicSetCollectionInfo> LoadSetsInfo(string collectionStoragePath)
         {
+            // Usable list of sets to update the collection with missing ones
+            var sets = CreateEmptyCollection();
+
             List<BasicSetCollectionInfo> collection = null;
             try
             {
@@ -24,12 +27,30 @@ namespace Hearthstone_Collection_Tracker
                     collection = setInfos;
                     foreach (var setCollection in collection)
                     {
+                        // Remove the current set from listSets
+                        int index = sets.FindIndex(x => x.SetName == setCollection.SetName);
+                        if (index >= 0)
+                        {
+                            sets[index] = null;
+                            sets.RemoveAt(index);
+                        }
+
                         foreach (var card in setCollection.Cards)
                         {
                             card.Card = cards.First(c => c.Id == card.CardId);
                             card.AmountGolden = card.AmountGolden.Clamp(0, card.MaxAmountInCollection);
                             card.AmountNonGolden = card.AmountNonGolden.Clamp(0, card.MaxAmountInCollection);
                         }
+                    }
+
+                    // Adding the sets that aren't already in the collection (in the right order)
+                    int indexDest = 0;
+                    foreach (var setName in CollectableSets)
+                    {
+                        int indexSrc = sets.FindIndex(x => x.SetName == setName);
+                        if (indexSrc >= 0)
+                            collection.Insert(indexDest, sets[indexSrc]);
+                        indexDest++;
                     }
                 }
             }
