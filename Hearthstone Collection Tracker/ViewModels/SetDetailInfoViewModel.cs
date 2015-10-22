@@ -19,7 +19,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 if (args.PropertyName == "SetCards")
                 {
                     List<CardStatsByRarity> cardStats = SetCards.GroupBy(c => c.Card.Rarity, c => c)
-                        .Select(gr => new CardStatsByRarity(gr.Key, gr.AsEnumerable()))
+                        .Select(gr => new CardStatsByRarity(gr.Key.ToString(), gr.AsEnumerable()))
                         .ToList();
                     TotalSetStats = new CardStatsByRarity("Total", SetCards);
                     cardStats.Add(TotalSetStats);
@@ -219,7 +219,7 @@ new Dictionary<string, int>
                 double totalAvgDustValue = 0;
                 foreach (var group in _cards.GroupBy(c => c.Card.Rarity))
                 {
-                    string currentRarity = group.Key;
+                    string currentRarity = group.Key.ToString();
                     int maxCardsAmount = group.Sum(c => c.MaxAmountInCollection);
 
                     int havingNonGolden = group.Sum(c => c.AmountNonGolden);
@@ -244,7 +244,7 @@ new Dictionary<string, int>
                 double totalAvgDustValue = 0;
                 foreach(var group in _cards.GroupBy(c => c.Card.Rarity))
                 {
-                    string currentRarity = group.Key;
+                    string currentRarity = group.Key.ToString();
                     int maxCardsAmount = group.Sum(c => c.MaxAmountInCollection);
 
                     int disenchantingCards = group.Sum(c => Math.Min(c.AmountGolden + c.AmountNonGolden + (c.MaxAmountInCollection - c.DesiredAmount), c.MaxAmountInCollection));
@@ -283,7 +283,7 @@ new Dictionary<string, int>
             double oddsForAllRaritites = 0.0;
             foreach (var group in cards.GroupBy(c => c.Card.Rarity, c => new { card = c, amount = cardsAmount(c) }))
             {
-                double currentProbability = probabilities[group.Key];
+                double currentProbability = probabilities[group.Key.ToString()];
                 int missingCardsAmount = group.Sum(c => Math.Min(1, c.amount));
                 int totalCardsAmount = group.Count();
                 double missingCardsOdds = (double)missingCardsAmount / totalCardsAmount;
@@ -300,7 +300,7 @@ new Dictionary<string, int>
             double totalRequiredDust = 0;
             foreach (var group in _cards.GroupBy(c => c.Card.Rarity))
             {
-                string currentRarity = group.Key;
+                string currentRarity = group.Key.ToString();
                 double missingCards = group.Sum(missingCardsCount);
                 totalRequiredDust += cardsCraftValue[currentRarity] * missingCards;
             }
