@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
+using Hearthstone_Deck_Tracker.Enums;
 
 namespace Hearthstone_Collection_Tracker.ViewModels
 {
@@ -53,7 +54,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             {
                 if (Card == null)
                     throw new ArgumentNullException();
-                return Card.Rarity == "Legendary" ? 1 : 2;
+                return Card.Rarity == Rarity.Legendary ? 1 : 2;
             }
         }
 
