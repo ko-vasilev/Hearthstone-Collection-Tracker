@@ -171,6 +171,7 @@ new Dictionary<CRarity, int>
             PlayerHas = 0;
             PlayerHasGolden = 0;
             PlayerHasDesired = 0;
+            MissingDesiredAmount = 0;
         }
 
         public CardStatsByRarity(string rarity, IEnumerable<CardInCollection> cards)
@@ -186,6 +187,7 @@ new Dictionary<CRarity, int>
                 PlayerHas += card.AmountNonGolden;
                 PlayerHasGolden += card.AmountGolden;
                 PlayerHasDesired += Math.Min(card.AmountGolden + card.AmountNonGolden, card.DesiredAmount);
+                MissingDesiredAmount = TotalDesiredAmount - PlayerHasDesired;
             }
 
             OpenGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountGolden, GoldenCardProbabilities);
@@ -206,6 +208,8 @@ new Dictionary<CRarity, int>
         public int PlayerHasGolden { get; set; }
 
         public int PlayerHasDesired { get; set; }
+
+        public int MissingDesiredAmount { get; set; }
 
         public double OpenGoldenOdds { get; set; }
 

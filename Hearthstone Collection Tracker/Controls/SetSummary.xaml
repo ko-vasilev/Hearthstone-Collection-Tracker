@@ -45,6 +45,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid HorizontalAlignment="Center">
+                                    <Grid.ToolTip>
+                                        <TextBlock Text="{Binding MissingDesiredAmount, StringFormat=That is {0} missing}" />
+                                    </Grid.ToolTip>
+                                    
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasDesiredCardsColumn"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
