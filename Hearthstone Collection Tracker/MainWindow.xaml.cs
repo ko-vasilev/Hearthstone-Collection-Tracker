@@ -81,6 +81,10 @@ namespace Hearthstone_Collection_Tracker
                     return false;
                 }
             }
+
+            if (Filter.OnlyLegendaries && c.Card.Rarity != Hearthstone_Deck_Tracker.Enums.Rarity.Legendary)
+                return false;
+            
             if (Filter.FormattedText == string.Empty)
                 return true;
             var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName.ToLowerInvariant(), true);

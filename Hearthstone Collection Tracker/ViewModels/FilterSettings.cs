@@ -44,6 +44,25 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             }
         }
 
+        private bool _onlyLegendaries;
+
+        public bool OnlyLegendaries
+        {
+            get
+            {
+                return _onlyLegendaries;
+            }
+            set
+            {
+                if (_onlyLegendaries != value)
+                {
+                    _onlyLegendaries = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         private string _text;
 
         public string Text

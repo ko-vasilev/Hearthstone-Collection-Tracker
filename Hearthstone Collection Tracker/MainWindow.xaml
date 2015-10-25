@@ -21,6 +21,8 @@
                                   Content="Show only missing" DockPanel.Dock="Top" Margin="10,5,5,0" />
                         <CheckBox x:Name="chkEditingGoldenCollection" IsChecked="{Binding Path=Filter.GoldenCards, Mode=TwoWay}"
                                   Content="Show only golden" DockPanel.Dock="Top" Margin="10,5,5,0" />
+                        <CheckBox x:Name="chkShowOnlyLegendaries" IsChecked="{Binding Path=Filter.OnlyLegendaries, Mode=TwoWay}"
+                                  Content="Show only legendaries" DockPanel.Dock="Top" Margin="10,5,5,0" />
                         <TextBox controls:TextBoxHelper.Watermark="Search..." x:Name="TextBoxCollectionFilter"
                             VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
                             Margin="10,5,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"
