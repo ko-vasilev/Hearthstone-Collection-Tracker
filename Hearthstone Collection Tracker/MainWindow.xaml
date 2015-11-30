@@ -17,12 +17,19 @@
                              MaxWidth="285" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
                 <Border Margin="5, 5, 0, 0" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                     <DockPanel LastChildFill="True" Height="Auto">
+<<<<<<< HEAD
                         <CheckBox x:Name="chkShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
                                   Content="Show only missing" DockPanel.Dock="Top" Margin="10,5,5,0" />
                         <CheckBox x:Name="chkEditingGoldenCollection" IsChecked="{Binding Path=Filter.GoldenCards, Mode=TwoWay}"
                                   Content="Show only golden" DockPanel.Dock="Top" Margin="10,5,5,0" />
                         <CheckBox x:Name="chkShowOnlyLegendaries" IsChecked="{Binding Path=Filter.OnlyLegendaries, Mode=TwoWay}"
                                   Content="Show only legendaries" DockPanel.Dock="Top" Margin="10,5,5,0" />
+=======
+                        <controls:ToggleSwitch x:Name="ShowOnlyMissing" IsChecked="{Binding Path=Filter.OnlyMissing, Mode=TwoWay}"
+                                           OffLabel="Show all" OnLabel="Show only missing" DockPanel.Dock="Top" Margin="10,5,5,0" />
+                        <controls:ToggleSwitch x:Name="EditingGoldenCollection" IsChecked="{Binding Path=Filter.GoldenCards, Mode=TwoWay}"
+                                           OffLabel="Non-golden" OnLabel="Golden" DockPanel.Dock="Top" Margin="10,5,5,0" />
+>>>>>>> parent of 7edafcc... Replaced ToggleSwitches with Checkboxes
                         <TextBox controls:TextBoxHelper.Watermark="Search..." x:Name="TextBoxCollectionFilter"
                             VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
                             Margin="10,5,10,0" TextWrapping="NoWrap" VerticalAlignment="Top"
