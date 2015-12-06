@@ -1,6 +1,7 @@
 ﻿using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Collection_Tracker.ViewModels;
 using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,7 +85,10 @@ namespace Hearthstone_Collection_Tracker
             if (Filter.FormattedText == string.Empty)
                 return true;
             var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName.ToLowerInvariant(), true);
-            return cardName.Contains(Filter.FormattedText);
+            Rarity rarity;
+            Boolean isRarity = Enum.TryParse(Filter.FormattedText, true, out rarity);
+            return cardName.Contains(Filter.FormattedText) 
+                || (isRarity && c.Card.Rarity == rarity);
         }
 
         private CancellationTokenSource _filterCancel = new CancellationTokenSource();

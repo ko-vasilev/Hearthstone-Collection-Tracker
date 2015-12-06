@@ -45,6 +45,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid HorizontalAlignment="Center">
+                                    <Grid.ToolTip>
+                                        <TextBlock Text="{Binding MissingDesiredAmount, StringFormat=That is {0} missing}" />
+                                    </Grid.ToolTip>
+                                    
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasDesiredCardsColumn"></ColumnDefinition>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -91,9 +95,9 @@
             </TextBlock>
             <TextBlock Margin="0, 3, 0, 0">
                 <TextBlock>Dust required to finish collection: </TextBlock>
-                <TextBlock Text="{Binding TotalSetStats.CraftNonGoldenDustRequired}"></TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.CraftNonGoldenDustRequired}" ToolTip="Dust required to craft non golden cards" />
                 <TextBlock> + </TextBlock>
-                <TextBlock Text="{Binding TotalSetStats.CraftGoldenDustRequired}" Foreground="DarkOrange"></TextBlock>
+                <TextBlock Text="{Binding TotalSetStats.CraftGoldenDustRequired}" Foreground="DarkOrange" ToolTip="Dust required to craft golden cards" />
             </TextBlock>
         </StackPanel>
     </GroupBox>
