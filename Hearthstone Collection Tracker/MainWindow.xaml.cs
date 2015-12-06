@@ -84,11 +84,16 @@ namespace Hearthstone_Collection_Tracker
             }
             if (Filter.FormattedText == string.Empty)
                 return true;
-            var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName.ToLowerInvariant(), true);
+
             Rarity rarity;
-            Boolean isRarity = Enum.TryParse(Filter.FormattedText, true, out rarity);
-            return cardName.Contains(Filter.FormattedText) 
-                || (isRarity && c.Card.Rarity == rarity);
+            bool filteringByRarity = Enum.TryParse(Filter.FormattedText, true, out rarity);
+            if (filteringByRarity)
+            {
+                return c.Card.Rarity == rarity;
+            }
+
+            var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName.ToLowerInvariant(), true);
+            return cardName.Contains(Filter.FormattedText);
         }
 
         private CancellationTokenSource _filterCancel = new CancellationTokenSource();

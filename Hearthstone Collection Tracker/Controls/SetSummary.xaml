@@ -46,7 +46,7 @@
                             <DataTemplate>
                                 <Grid HorizontalAlignment="Center">
                                     <Grid.ToolTip>
-                                        <TextBlock Text="{Binding MissingDesiredAmount, StringFormat=That is {0} missing}" />
+                                        <TextBlock Text="{Binding MissingDesiredAmount, StringFormat={}{0} cards are missing}" />
                                     </Grid.ToolTip>
                                     
                                     <Grid.ColumnDefinitions>

@@ -187,8 +187,8 @@ new Dictionary<CRarity, int>
                 PlayerHas += card.AmountNonGolden;
                 PlayerHasGolden += card.AmountGolden;
                 PlayerHasDesired += Math.Min(card.AmountGolden + card.AmountNonGolden, card.DesiredAmount);
-                MissingDesiredAmount = TotalDesiredAmount - PlayerHasDesired;
             }
+            MissingDesiredAmount = TotalDesiredAmount - PlayerHasDesired;
 
             OpenGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountGolden, GoldenCardProbabilities);
             OpenNonGoldenOdds = CalculateOpeningOdds(cards, card => card.MaxAmountInCollection - card.AmountNonGolden, CardProbabilities);
