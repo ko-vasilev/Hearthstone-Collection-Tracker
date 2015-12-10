@@ -86,6 +86,11 @@ namespace Hearthstone_Collection_Tracker
                 alertSB.Append("You can disable this alert in Collection Tracker plugin settings.");
                 Hearthstone_Deck_Tracker.Core.MainWindow.ShowMessageAsync("Missing cards in collection", alertSB.ToString());
             }
+            deck.MissingCards = missingCards.Select(mc =>
+            {
+                mc.Item1.Count = mc.Item2;
+                return mc.Item1;
+            }).ToList();
         }
 
         public void OnUnload()
