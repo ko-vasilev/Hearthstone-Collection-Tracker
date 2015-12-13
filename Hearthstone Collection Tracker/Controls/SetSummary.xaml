@@ -4,11 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
+             xmlns:hct="clr-namespace:Hearthstone_Collection_Tracker"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="250">
     <UserControl.Resources>
         <internal:PercentageConverter x:Key="PercentageConverter" />
+        <internal:VisibilityConverter x:Key="VisibilityConverter" />
+        <DataGridTemplateColumn x:Key="DesiredProgressColumn" Header="Desired"
+                                Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static hct:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}">
+            <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ToolTip>
+                            <TextBlock Text="{Binding MissingDesiredAmount, StringFormat={}{0} cards are missing}" />
+                        </Grid.ToolTip>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasDesiredCardsColumn"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="TotalDesiredCardsColumn"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding PlayerHasDesired}" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Column="1">/</TextBlock>
+                        <TextBlock Grid.Column="2" Text="{Binding TotalDesiredAmount}" HorizontalAlignment="Left"/>
+                    </Grid>
+                </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
     </UserControl.Resources>
     <GroupBox Header="{Binding SetName}">
         <StackPanel>
@@ -41,26 +63,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Desired">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Center">
-                                    <Grid.ToolTip>
-                                        <TextBlock Text="{Binding MissingDesiredAmount, StringFormat={}{0} cards are missing}" />
-                                    </Grid.ToolTip>
-                                    
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="PlayerHasDesiredCardsColumn"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="TotalDesiredCardsColumn"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding PlayerHasDesired}" HorizontalAlignment="Right"/>
-                                    <TextBlock Grid.Column="1">/</TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding TotalDesiredAmount}" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <StaticResource ResourceKey="DesiredProgressColumn" />
                     <DataGridTemplateColumn Header="Opening Odds">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -77,8 +80,12 @@
                                     <TextBlock Grid.Column="1">/</TextBlock>
                                     <TextBlock Grid.Column="2" Text="{Binding OpenGoldenOdds, Converter={StaticResource PercentageConverter}}"
                                                Foreground="DarkOrange" HorizontalAlignment="Center" ToolTip="Golden" />
-                                    <TextBlock Grid.Column="3">/</TextBlock>
+                                    <TextBlock Grid.Column="3"
+                                               Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static hct:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}">
+                                        /
+                                    </TextBlock>
                                     <TextBlock Grid.Column="4" Text="{Binding OpenDesiredOdds, Converter={StaticResource PercentageConverter}}"
+                                               Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static hct:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}"
                                                HorizontalAlignment="Left" ToolTip="Desired"/>
                                 </Grid>
                             </DataTemplate>
@@ -91,7 +98,8 @@
                 <TextBlock>Average dust value per pack: </TextBlock>
                 <TextBlock Text="{Binding TotalSetStats.AverageDustValue, StringFormat={}{0:0}}"></TextBlock>
                 <TextBlock Text="{Binding TotalSetStats.AverageDustValueNonDesired, StringFormat= ({0:0})}"
-                           ToolTip="If disenchanting not desired cards"></TextBlock>
+                           ToolTip="If disenchanting not desired cards"
+                           Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static hct:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}"></TextBlock>
             </TextBlock>
             <TextBlock Margin="0, 3, 0, 0">
                 <TextBlock>Dust required to finish collection: </TextBlock>

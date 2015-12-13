@@ -205,7 +205,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return System.IO.Path.Combine(Hearthstone_Deck_Tracker.Config.Instance.DataDir, "CollectionTracker");  }
         }
 
-        internal static PluginSettings Settings { get; set; }
+        public static PluginSettings Settings { get; set; }
 
         #region Auto Update check implementation
 

@@ -87,6 +87,7 @@
     <Compile Include="Internal\DataUpdaters\DataUpdaterV02.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV022.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV021.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV03.cs" />
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
     <Compile Include="Internal\Helpers.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Internal\PercentageConverter.cs" />
     <Compile Include="Internal\PluginSettings.cs" />
     <Compile Include="Internal\TrulyObservableCollection.cs" />
+    <Compile Include="Internal\VisibilityConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

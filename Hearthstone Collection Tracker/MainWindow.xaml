@@ -6,6 +6,7 @@
         xmlns:pluginControls="clr-namespace:Hearthstone_Collection_Tracker.Controls"
         xmlns:DTcontrols="clr-namespace:Hearthstone_Deck_Tracker.Controls;assembly=HearthstoneDeckTracker"
         xmlns:hearthstoneDeckTracker="clr-namespace:Hearthstone_Deck_Tracker;assembly=HearthstoneDeckTracker"
+        xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
         Title="Collection Tracker" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Icon="Internal\HSCollection.ico"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
@@ -66,6 +67,7 @@
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
+                                <internal:VisibilityConverter x:Key="VisibilityConverter" />
                             </ListView.Resources>
                             <ListView.GroupStyle>
                                 <GroupStyle>
@@ -120,7 +122,8 @@
                                         </hearthstoneDeckTracker:OutlinedTextBlock>
                                         <ComboBox Grid.Column="1" Width="20" SelectedItem="{Binding DesiredAmount, Mode=TwoWay}" Height="25"
                                                   ToolTip="Desired amount in collection"
-                                                  ItemsSource="{Binding DesiredAmountOptions, Mode=OneTime}">
+                                                  ItemsSource="{Binding DesiredAmountOptions, Mode=OneTime}"
+                                                  Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static local:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}">
                                         </ComboBox>
                                     </Grid>
                                 </DataTemplate>

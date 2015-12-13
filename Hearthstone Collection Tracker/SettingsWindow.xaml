@@ -94,5 +94,9 @@
                   Content="Notify on missing cards"
                   ToolTip="Alert when deck is created with missing cards in current collection"
                   HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="CheckboxEnableDesiredCardsFeature" IsChecked="{Binding Path=Settings.EnableDesiredCardsFeature, Mode=TwoWay}"
+                  Content="Use desired cards"
+                  ToolTip="Controls visibility of Desired Cards feature"
+                  HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
     </StackPanel>
 </controls:MetroWindow>
