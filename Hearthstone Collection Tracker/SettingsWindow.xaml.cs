@@ -152,10 +152,19 @@ namespace Hearthstone_Collection_Tracker
                     var existingSet = Settings.ActiveAccountSetsInfo.FirstOrDefault(s => s.SetName == set.SetName);
                     if (existingSet == null)
                     {
-                        Settings.ActiveAccountSetsInfo.Add(existingSet);
+                        Settings.ActiveAccountSetsInfo.Add(set);
                     }
                     else
                     {
+                        // keep desired amount
+                        foreach(var card in set.Cards)
+                        {
+                            var existingCardInfo = existingSet.Cards.FirstOrDefault(c => c.CardId == card.CardId);
+                            if (existingCardInfo != null)
+                            {
+                                card.DesiredAmount = existingCardInfo.DesiredAmount;
+                            }
+                        }
                         existingSet.Cards = set.Cards;
                     }
                 }
