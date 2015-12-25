@@ -175,8 +175,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             {
                 SendKeys.SendWait(fixedName);
             }
+            SendKeys.SendWait("{ENTER}");   //Needs a second "Enter" press to reset properly (so search field is blank at query begining)
             SendKeys.SendWait("{ENTER}");
-
+            
             Logger.WriteLine("try to import card: " + card.Name, LOGGER_CATEGORY, 1);
             await Task.Delay(ImportStepDelay * 3);
 
