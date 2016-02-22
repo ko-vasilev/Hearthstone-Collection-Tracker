@@ -8,7 +8,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Icon="Internal\HSCollection.ico"
-        Title="Settings" Width="350" Height="300">
+        Title="Settings" Width="350" Height="350">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -50,6 +50,25 @@
                     <Button Name="ButtonImportFromGame" Margin="10,15,10,0" Click="ButtonImportFromGame_Click">Start Import</Button>
                 </StackPanel>
             </controls:Flyout>
+            <controls:Flyout Name="FlyoutUpdate" Position="Right" Panel.ZIndex="102" Header="Collection Import" Height="auto"
+                             Width="{Binding Width, RelativeSource={RelativeSource AncestorType=local:SettingsWindow}}">
+                <StackPanel>
+                    <!--<DockPanel Margin="5,5,10,0">
+                        <Label Content="Speed:" />
+                        <ComboBox Name="ComboboxImportSpeed" SelectedIndex="1"
+                                                  HorizontalAlignment="Right" Width="150">
+                            <ComboBoxItem Tag="60">Fast (60ms)</ComboBoxItem>
+                            <ComboBoxItem Tag="100">Normal (100ms)</ComboBoxItem>
+                            <ComboBoxItem Tag="150">Slow (150ms)</ComboBoxItem>
+                        </ComboBox>
+                    </DockPanel>-->
+                    <CheckBox x:Name="CheckBoxCheckBasedOnGolden"
+                              Content="Update Based On Golden Card Count"
+                              ToolTip="Controls whether update checks based on golden or non-golden card count"
+                              HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                    <Button Name="ButtonUpdateFromGame" Margin="10,15,10,0" Click="ButtonUpdateFromGame_Click">Start Update</Button>
+                </StackPanel>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <StackPanel>
@@ -87,6 +106,8 @@
                     <Button Name="ButtonAddAccount" Margin="10,15,10,0" Content="Add account" Click="ButtonAddAccount_Click" />
                     <Button Name="ButtonDeleteAccount" Margin="10,15,10,0" Content="Delete current account" Click="ButtonDeleteAccount_Click"/>
                     <Button Name="ButtonImport" Margin="10,15,10,0" Content="Import From Hearthstone" Click="ButtonImport_Click" />
+                    <Button Name="ButtonUpdate" Margin="10,15,10,0" Content="Update From Hearthstone" Click="ButtonUpdate_Click" />
+                    
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

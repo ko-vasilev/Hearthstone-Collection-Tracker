@@ -43,55 +43,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
             try
             {
-                HideHDTOverlay();
-
-                HearthstoneWindow = User32.GetHearthstoneWindow();
-
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    //restore window and bring to foreground
-                    User32.ShowWindow(HearthstoneWindow, User32.SwRestore);
-                    User32.SetForegroundWindow(HearthstoneWindow);
-                    //wait it to actually be in foreground, else the rect might be wrong
-                    await Task.Delay(500);
-                }
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    Logger.WriteLine("Can't find Hearthstone window.", LOGGER_CATEGORY);
-                    throw new ImportingException("Can't find Hearthstone window.");
-                }
-
-                Logger.WriteLine("Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LOGGER_CATEGORY);
-                await Task.Delay(ImportStepDelay * 3);
-
-                var hsRect = User32.GetHearthstoneRect(false);
-                WindowXRatioTo1920 = (double)hsRect.Width / 1920;
-                WindowYRatioTo1080 = (double)hsRect.Height / 1080;
-                var ratio = (4.0 / 3.0) / ((double)hsRect.Width / hsRect.Height);
-
-                SearchBoxPosition = new Point((int)(GetXPos(Config.Instance.ExportSearchBoxX, hsRect.Width, ratio)),
-                    (int)(Config.Instance.ExportSearchBoxY * hsRect.Height));
-                var cardPosX = GetXPos(Config.Instance.ExportCard1X, hsRect.Width, ratio);
-                var card2PosX = GetXPos(Config.Instance.ExportCard2X, hsRect.Width, ratio);
-                var cardPosY = Config.Instance.ExportCardsY * hsRect.Height;
-
                 foreach (var set in sets)
                 {
-                    foreach (var card in set.Cards)
-                    {
-                        var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
-                        int amountNonGolden = amount.Item1;
-                        int amountGolden = amount.Item2;
-                        if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
-                        {
-                            int missing = card.MaxAmountInCollection - amountNonGolden;
-                            int transferAmount = Math.Min(amountGolden, missing);
-                            amountGolden -= transferAmount;
-                            amountNonGolden += transferAmount;
-                        }
-                        card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
-                        card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
-                    }
+                    set.Cards = await ImportLatestCount(set.Cards);
                 }
             }
             catch (ImportingException e)
@@ -110,6 +64,99 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             }
 
             return sets;
+        }
+
+        public async Task<List<BasicSetCollectionInfo>> Update(List<BasicSetCollectionInfo> sets, bool checkForMissingGolden = false)
+        {
+            try
+            {
+                foreach (var set in sets)
+                {
+                    var updatedCards = await ImportLatestCount(set.Cards.Where(c => (checkForMissingGolden && c.AmountGolden < CardQty(c)) || (!checkForMissingGolden && c.AmountNonGolden < CardQty(c))).ToList());
+                }
+            }
+            catch (ImportingException e)
+            {
+                ShowHDTOverlay();
+                throw;
+            }
+            catch (Exception e)
+            {
+                ShowHDTOverlay();
+                throw new ImportingException("Unexpected exception occured during importing", e);
+            }
+            finally
+            {
+                ShowHDTOverlay();
+            }
+
+            return sets;
+        }
+
+        private async Task<List<CardInCollection>> ImportLatestCount(List<CardInCollection> cards)
+        {
+            if (!cards.Any())
+            {
+                return cards;
+            }
+
+            HideHDTOverlay();
+
+            HearthstoneWindow = User32.GetHearthstoneWindow();
+
+            if (!User32.IsHearthstoneInForeground())
+            {
+                //restore window and bring to foreground
+                User32.ShowWindow(HearthstoneWindow, User32.SwRestore);
+                User32.SetForegroundWindow(HearthstoneWindow);
+                //wait it to actually be in foreground, else the rect might be wrong
+                await Task.Delay(500);
+            }
+            if (!User32.IsHearthstoneInForeground())
+            {
+                Logger.WriteLine("Can't find Hearthstone window.", LOGGER_CATEGORY);
+                throw new ImportingException("Can't find Hearthstone window.");
+            }
+
+            Logger.WriteLine("Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LOGGER_CATEGORY);
+            await Task.Delay(ImportStepDelay * 3);
+
+            var hsRect = User32.GetHearthstoneRect(false);
+            WindowXRatioTo1920 = (double)hsRect.Width / 1920;
+            WindowYRatioTo1080 = (double)hsRect.Height / 1080;
+            var ratio = (4.0 / 3.0) / ((double)hsRect.Width / hsRect.Height);
+
+            SearchBoxPosition = new Point((int)(GetXPos(Config.Instance.ExportSearchBoxX, hsRect.Width, ratio)),
+                (int)(Config.Instance.ExportSearchBoxY * hsRect.Height));
+            var cardPosX = GetXPos(Config.Instance.ExportCard1X, hsRect.Width, ratio);
+            var card2PosX = GetXPos(Config.Instance.ExportCard2X, hsRect.Width, ratio);
+            var cardPosY = Config.Instance.ExportCardsY * hsRect.Height;
+
+             foreach (var card in cards)
+             {
+                    var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
+                    int amountNonGolden = amount.Item1;
+                    int amountGolden = amount.Item2;
+                    if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
+                    {
+                        int missing = card.MaxAmountInCollection - amountNonGolden;
+                        int transferAmount = Math.Min(amountGolden, missing);
+                        amountGolden -= transferAmount;
+                        amountNonGolden += transferAmount;
+                    }
+                    card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
+                    card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
+            }
+
+            return cards;
+        }
+
+        private int CardQty(CardInCollection c)
+        {
+            if (c.Card.Rarity == Hearthstone_Deck_Tracker.Enums.Rarity.Legendary)
+                return 1;
+
+            return 2;
         }
 
         private void HideHDTOverlay()
