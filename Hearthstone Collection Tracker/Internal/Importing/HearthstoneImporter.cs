@@ -1,6 +1,8 @@
 ﻿using Hearthstone_Collection_Tracker.ViewModels;
 using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
+using Hearthstone_Deck_Tracker.Utility;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -43,55 +45,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
             try
             {
-                HideHDTOverlay();
-
-                HearthstoneWindow = User32.GetHearthstoneWindow();
-
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    //restore window and bring to foreground
-                    User32.ShowWindow(HearthstoneWindow, User32.SwRestore);
-                    User32.SetForegroundWindow(HearthstoneWindow);
-                    //wait it to actually be in foreground, else the rect might be wrong
-                    await Task.Delay(500);
-                }
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    Logger.WriteLine("Can't find Hearthstone window.", LOGGER_CATEGORY);
-                    throw new ImportingException("Can't find Hearthstone window.");
-                }
-
-                Logger.WriteLine("Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LOGGER_CATEGORY);
-                await Task.Delay(ImportStepDelay * 3);
-
-                var hsRect = User32.GetHearthstoneRect(false);
-                WindowXRatioTo1920 = (double)hsRect.Width / 1920;
-                WindowYRatioTo1080 = (double)hsRect.Height / 1080;
-                var ratio = (4.0 / 3.0) / ((double)hsRect.Width / hsRect.Height);
-
-                SearchBoxPosition = new Point((int)(GetXPos(Config.Instance.ExportSearchBoxX, hsRect.Width, ratio)),
-                    (int)(Config.Instance.ExportSearchBoxY * hsRect.Height));
-                var cardPosX = GetXPos(Config.Instance.ExportCard1X, hsRect.Width, ratio);
-                var card2PosX = GetXPos(Config.Instance.ExportCard2X, hsRect.Width, ratio);
-                var cardPosY = Config.Instance.ExportCardsY * hsRect.Height;
-
                 foreach (var set in sets)
                 {
-                    foreach (var card in set.Cards)
-                    {
-                        var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
-                        int amountNonGolden = amount.Item1;
-                        int amountGolden = amount.Item2;
-                        if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
-                        {
-                            int missing = card.MaxAmountInCollection - amountNonGolden;
-                            int transferAmount = Math.Min(amountGolden, missing);
-                            amountGolden -= transferAmount;
-                            amountNonGolden += transferAmount;
-                        }
-                        card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
-                        card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
-                    }
+                    set.Cards = await ImportLatestCount(set.Cards);
                 }
             }
             catch (ImportingException e)
@@ -110,6 +66,99 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             }
 
             return sets;
+        }
+
+        public async Task<List<BasicSetCollectionInfo>> Update(List<BasicSetCollectionInfo> sets, bool checkForMissingGolden = false)
+        {
+            try
+            {
+                foreach (var set in sets)
+                {
+                    var updatedCards = await ImportLatestCount(set.Cards.Where(c => (checkForMissingGolden && c.AmountGolden < CardQty(c)) || (!checkForMissingGolden && c.AmountNonGolden < CardQty(c))).ToList());
+                }
+            }
+            catch (ImportingException e)
+            {
+                ShowHDTOverlay();
+                throw;
+            }
+            catch (Exception e)
+            {
+                ShowHDTOverlay();
+                throw new ImportingException("Unexpected exception occured during importing", e);
+            }
+            finally
+            {
+                ShowHDTOverlay();
+            }
+
+            return sets;
+        }
+
+        private async Task<List<CardInCollection>> ImportLatestCount(List<CardInCollection> cards)
+        {
+            if (!cards.Any())
+            {
+                return cards;
+            }
+
+            HideHDTOverlay();
+
+            HearthstoneWindow = User32.GetHearthstoneWindow();
+
+            if (!User32.IsHearthstoneInForeground())
+            {
+                //restore window and bring to foreground
+                User32.ShowWindow(HearthstoneWindow, User32.SwRestore);
+                User32.SetForegroundWindow(HearthstoneWindow);
+                //wait it to actually be in foreground, else the rect might be wrong
+                await Task.Delay(500);
+            }
+            if (!User32.IsHearthstoneInForeground())
+            {
+                Log.WriteLine(string.Format("[{0}] Can't find Hearthstone window.", LOGGER_CATEGORY), LogType.Error);
+                throw new ImportingException("Can't find Hearthstone window.");
+            }
+
+            Log.WriteLine(string.Format("[{0}] Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LOGGER_CATEGORY), LogType.Debug);
+            await Task.Delay(ImportStepDelay * 3);
+
+            var hsRect = User32.GetHearthstoneRect(false);
+            WindowXRatioTo1920 = (double)hsRect.Width / 1920;
+            WindowYRatioTo1080 = (double)hsRect.Height / 1080;
+            var ratio = (4.0 / 3.0) / ((double)hsRect.Width / hsRect.Height);
+
+            SearchBoxPosition = new Point((int)(GetXPos(Config.Instance.ExportSearchBoxX, hsRect.Width, ratio)),
+                (int)(Config.Instance.ExportSearchBoxY * hsRect.Height));
+            var cardPosX = GetXPos(Config.Instance.ExportCard1X, hsRect.Width, ratio);
+            var card2PosX = GetXPos(Config.Instance.ExportCard2X, hsRect.Width, ratio);
+            var cardPosY = Config.Instance.ExportCardsY * hsRect.Height;
+
+             foreach (var card in cards)
+             {
+                    var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
+                    int amountNonGolden = amount.Item1;
+                    int amountGolden = amount.Item2;
+                    if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
+                    {
+                        int missing = card.MaxAmountInCollection - amountNonGolden;
+                        int transferAmount = Math.Min(amountGolden, missing);
+                        amountGolden -= transferAmount;
+                        amountNonGolden += transferAmount;
+                    }
+                    card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
+                    card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
+            }
+
+            return cards;
+        }
+
+        private int CardQty(CardInCollection c)
+        {
+            if (c.Card.Rarity == Hearthstone_Deck_Tracker.Enums.Rarity.Legendary)
+                return 1;
+
+            return 2;
         }
 
         private void HideHDTOverlay()
@@ -157,7 +206,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
         {
             if (!User32.IsHearthstoneInForeground())
             {
-                Logger.WriteLine("Importing aborted, window lost focus", LOGGER_CATEGORY);
+                Log.WriteLine(string.Format("[{0}] Importing aborted, window lost focus", LOGGER_CATEGORY), LogType.Warning);
                 throw new ImportingException("Hearthstone window lost focus");
             }
 
@@ -177,7 +226,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             }
             SendKeys.SendWait("{ENTER}");
 
-            Logger.WriteLine("try to import card: " + card.Name, LOGGER_CATEGORY, 1);
+            Log.WriteLine(string.Format("[{0}] try to import card: " + card.Name, LOGGER_CATEGORY), LogType.Debug);
             await Task.Delay(ImportStepDelay * 3);
 
             Tuple<int, int> result;
@@ -220,7 +269,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
             int size = (int)Math.Round(initialSize * WindowYRatioTo1080);
 
-            var capture = Helper.CaptureHearthstone(new Point(posX, posY), size, size, wndHandle);
+            //var capture = ScreenCapture.CaptureHearthstone(new Point(posX, posY), size, size, wndHandle);
+            var capture = CaptureHearthstone(new Point(posX, posY), size, size, wndHandle);
+
             if (capture == null)
                 return false;
 
@@ -238,7 +289,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             int cardYBottom = posY + (int)(WindowYRatioTo1080 * screen1080CardHeight);
             int cardXMiddle = posX + (int)(WindowXRatioTo1920 * screen1920DistanceBeforeAmountLabel);
 
-            var capture = Helper.CaptureHearthstone(new Point(cardXMiddle, cardYBottom), size, size, wndHandle);
+            var capture = CaptureHearthstone(new Point(cardXMiddle, cardYBottom), size, size, wndHandle);
+            //var capture = ScreenCapture.CaptureHearthstone(new Point(cardXMiddle, cardYBottom), size, size, wndHandle);
+
             if (capture == null)
                 return false;
 
@@ -259,11 +312,18 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             int borderPosY = posY + (int)(height * 0.35);
             int borderPosX = posX + widthToRightCorner; 
 
-            var capture = Helper.CaptureHearthstone(new Point(borderPosX, borderPosY), width, height, wndHandle);
+            //var capture = ScreenCapture.CaptureHearthstone(new Point(borderPosX, borderPosY), width, height, wndHandle);
+            var capture = CaptureHearthstone(new Point(borderPosX, borderPosY), width, height, wndHandle);
             if (capture == null)
                 return false;
 
             return capture.GetAvgBrightness() > minBrightness;
         }
+     
+        private Bitmap CaptureHearthstone(Point point, int width, int height, IntPtr wndHandle)
+        {
+            return ScreenCapture.CaptureScreen(wndHandle, point, width, height);
+        }
+           
     }
 }

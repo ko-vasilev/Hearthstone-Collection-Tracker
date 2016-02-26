@@ -1,5 +1,6 @@
 ﻿using Hearthstone_Collection_Tracker.ViewModels;
 using Hearthstone_Deck_Tracker;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,7 @@ namespace Hearthstone_Collection_Tracker.Internal
             var activeAccount = Accounts.FirstOrDefault(ac => ac.AccountName == accountName);
             if (activeAccount == null)
             {
-                Logger.WriteLine("Cannot set active account " + accountName + " because it does not exist", "CollectionTracker.PluginSettings", 1);
+                Log.WriteLine(string.Format("[{0}] Cannot set active account " + accountName + " because it does not exist", "CollectionTracker.PluginSettings"), LogType.Warning);
                 return;
             }
 
@@ -69,7 +70,7 @@ namespace Hearthstone_Collection_Tracker.Internal
             var existingAccount = Accounts.FirstOrDefault(acc => acc.AccountName == accountName);
             if (existingAccount != null)
             {
-                Logger.WriteLine("Account already exists: " + accountName, "CollectionTracker.PluginSettings", 1);
+                Log.WriteLine(string.Format("[{0}] Account already exists: " + accountName, "CollectionTracker.PluginSettings"), LogType.Warning);
                 SetActiveAccount(accountName);
                 return;
             }

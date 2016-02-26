@@ -203,5 +203,71 @@ namespace Hearthstone_Collection_Tracker
                 UpdateAccountsComboBox();
             }
         }
+
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            FlyoutUpdate.IsOpen = true;
+        }
+
+        private async void ButtonUpdateFromGame_Click(object sender, RoutedEventArgs e)
+        {
+            const string message = "1) open My Collection in Hearthstone\n2) clear card filters\n3) do not move your mouse or type after clicking \"Update\"";
+
+            var settings = new MetroDialogSettings { AffirmativeButtonText = "Update" };
+            var result =
+                await
+                this.ShowMessageAsync("Update collection from Hearthstone", message, MessageDialogStyle.AffirmativeAndNegative, settings);
+
+            if (result != MessageDialogResult.Affirmative)
+            {
+                return;
+            }
+
+            var importObject = new HearthstoneImporter();
+            importObject.ImportStepDelay = int.Parse((ComboboxImportSpeed.SelectedItem as ComboBoxItem).Tag.ToString());
+            importObject.PasteFromClipboard = CheckboxImportPasteClipboard.IsChecked.HasValue ?
+                CheckboxImportPasteClipboard.IsChecked.Value : false;
+            importObject.NonGoldenFirst = CheckboxPrioritizeFullCollection.IsChecked.HasValue ?
+                CheckboxPrioritizeFullCollection.IsChecked.Value : false;
+
+            try
+            {
+                var currentCollection = Settings.ActiveAccountSetsInfo.ToList();
+                var collection = await importObject.Update(currentCollection);
+                // close plugin window
+                if (PluginWindow != null && PluginWindow.IsVisible)
+                {
+                    PluginWindow.Close();
+                }
+                foreach (var set in collection)
+                {
+                    var existingSet = Settings.ActiveAccountSetsInfo.FirstOrDefault(s => s.SetName == set.SetName);
+                    if (existingSet == null)
+                    {
+                        Settings.ActiveAccountSetsInfo.Add(set);
+                    }
+                    else
+                    {
+                        existingSet.Cards = set.Cards;
+                    }
+                }
+                await this.ShowMessageAsync("Update succeed", "Your collection has been successfully updated from Hearthstone!");
+            }
+            catch (ImportingException ex)
+            {
+                await this.ShowMessageAsync("Update aborted", ex.Message);
+            }
+
+            // bring settings window to front
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+
+            Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
+        }
     }
 }

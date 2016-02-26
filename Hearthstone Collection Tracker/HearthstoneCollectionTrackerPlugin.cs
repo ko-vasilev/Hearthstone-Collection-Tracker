@@ -147,7 +147,9 @@ namespace Hearthstone_Collection_Tracker
             get
             {
                 return @"Helps user to keep track on packs progess, suggesting the packs that will most probably contain missing cards.
-Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearthstone-Deck-Tracker or directly to e-mail oppa.kostya.bko@gmail.com.";
+Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearthstone-Deck-Tracker or directly to e-mail oppa.kostya.bko@gmail.com.
+
+This version updated by Graeme Finn [finnster@gmail.com] https://github.com/koppite/Hearthstone-Collection-Tracker";
             }
         }
 
@@ -161,7 +163,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return "Vasilev Konstantin"; }
         }
 
-        public static readonly Version PluginVersion = new Version(0, 2, 4);
+        public static readonly Version PluginVersion = new Version(0, 2, 4, 1);
 
         public Version Version
         {
