@@ -45,6 +45,13 @@ namespace Hearthstone_Collection_Tracker
             {
                 HandleFilterChange(sender, args);
             };
+
+            string activeAccount = HearthstoneCollectionTrackerPlugin.Settings.ActiveAccount;
+            Title = "Collection Tracker";
+            if (!string.IsNullOrEmpty(activeAccount))
+            {
+                Title += " (" + activeAccount + ")";
+            }
         }
 
         private void EditCollection(SetDetailInfoViewModel setInfo)

@@ -7,7 +7,7 @@
         xmlns:DTcontrols="clr-namespace:Hearthstone_Deck_Tracker.Controls;assembly=HearthstoneDeckTracker"
         xmlns:hearthstoneDeckTracker="clr-namespace:Hearthstone_Deck_Tracker;assembly=HearthstoneDeckTracker"
         xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
-        Title="Collection Tracker" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
         Icon="Internal\HSCollection.ico"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
