@@ -185,6 +185,9 @@ namespace Hearthstone_Collection_Tracker
             Topmost = true;
             Topmost = false;
             Focus();
+
+            // save imported collection
+            HearthstoneCollectionTrackerPlugin.Settings.SaveCurrentAccount();
         }
 
         private void ButtonEditAccount_Click(object sender, RoutedEventArgs e)
