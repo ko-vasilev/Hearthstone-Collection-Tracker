@@ -222,7 +222,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
             int size = (int)Math.Round(initialSize * WindowYRatioTo1080);
 
-            var capture = ScreenCapture.CaptureHearthstone(new Point(posX, posY), size, size, wndHandle);
+            var capture = ScreenCapture.CaptureScreen(wndHandle, new Point(posX, posY), size, size);
             if (capture == null)
                 return false;
 
@@ -240,7 +240,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             int cardYBottom = posY + (int)(WindowYRatioTo1080 * screen1080CardHeight);
             int cardXMiddle = posX + (int)(WindowXRatioTo1920 * screen1920DistanceBeforeAmountLabel);
 
-            var capture = ScreenCapture.CaptureHearthstone(new Point(cardXMiddle, cardYBottom), size, size, wndHandle);
+            var capture = ScreenCapture.CaptureScreen(wndHandle, new Point(cardXMiddle, cardYBottom), size, size);
             if (capture == null)
                 return false;
 
@@ -259,9 +259,9 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             int widthToRightCorner = (int)Math.Round(initialWidthToRightCorner * WindowXRatioTo1920);
             // need to track border of a card
             int borderPosY = posY + (int)(height * 0.35);
-            int borderPosX = posX + widthToRightCorner; 
+            int borderPosX = posX + widthToRightCorner;
 
-            var capture = ScreenCapture.CaptureHearthstone(new Point(borderPosX, borderPosY), width, height, wndHandle);
+            var capture = ScreenCapture.CaptureScreen(wndHandle, new Point(borderPosX, borderPosY), width, height);
             if (capture == null)
                 return false;
 
