@@ -1,6 +1,7 @@
 ﻿using Hearthstone_Collection_Tracker.Controls;
 using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Collection_Tracker.Internal.Importing;
+using Hearthstone_Deck_Tracker;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Hearthstone_Collection_Tracker
             var setsOption = SetCardsManager.CollectableSets.Select(s => new KeyValuePair<string, string>(s, s)).ToList();
             setsOption.Insert(0, new KeyValuePair<string, string>("All", null));
             ComboboxImportingSet.ItemsSource = setsOption;
+
+            CheckboxImportPasteClipboard.IsChecked = Config.Instance.ExportPasteClipboard || !Helper.LatinLanguages.Contains(Config.Instance.SelectedLanguage);
         }
 
         private void UpdateAccountsComboBox()
