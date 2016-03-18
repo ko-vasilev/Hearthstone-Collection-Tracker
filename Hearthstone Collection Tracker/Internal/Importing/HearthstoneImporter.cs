@@ -165,17 +165,15 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
 
             await ClickOnPoint(HearthstoneWindow, SearchBoxPosition, ImportStepDelay);
 
-            var addArtist = new[] { "zhCN", "zhTW", "ruRU", "koKR" }.All(x => Config.Instance.SelectedLanguage != x);
-            var fixedName = addArtist ? (card.LocalizedName + " " + card.Artist).ToLowerInvariant()
-                : card.LocalizedName.ToLowerInvariant();
+            string searchInput = Hearthstone_Deck_Tracker.Exporting.ExportingHelper.GetSearchString(card);
             if (PasteFromClipboard)
             {
-                Clipboard.SetText(fixedName);
+                Clipboard.SetText(searchInput);
                 SendKeys.SendWait("^v");
             }
             else
             {
-                SendKeys.SendWait(fixedName);
+                SendKeys.SendWait(searchInput);
             }
             SendKeys.SendWait("{ENTER}");
 
