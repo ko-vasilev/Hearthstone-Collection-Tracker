@@ -111,7 +111,10 @@ namespace Hearthstone_Collection_Tracker
                 }
                 _settingsWindow = null;
             }
-            Settings.SaveSettings(PluginDataDir);
+            if (Settings != null)
+            {
+                Settings.SaveSettings(PluginDataDir);
+            }
         }
 
         public void OnButtonPress()
