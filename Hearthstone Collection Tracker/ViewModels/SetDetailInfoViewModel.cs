@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using CRarity = Hearthstone_Deck_Tracker.Enums.Rarity;
+using CRarity = HearthDb.Enums.Rarity;
 
 namespace Hearthstone_Collection_Tracker.ViewModels
 {
@@ -100,19 +100,19 @@ namespace Hearthstone_Collection_Tracker.ViewModels
         private static readonly ReadOnlyDictionary<CRarity, double> CardProbabilities = new ReadOnlyDictionary<CRarity, double>(
             new Dictionary<CRarity, double>
             {
-                { CRarity.Common, 0.6997 },
-                { CRarity.Rare, 0.2140 },
-                { CRarity.Epic, 0.0429 },
-                { CRarity.Legendary, 0.0108 }
+                { CRarity.COMMON, 0.6997 },
+                { CRarity.RARE, 0.2140 },
+                { CRarity.EPIC, 0.0429 },
+                { CRarity.LEGENDARY, 0.0108 }
             });
 
         private static readonly ReadOnlyDictionary<CRarity, double> GoldenCardProbabilities = new ReadOnlyDictionary<CRarity, double>(
             new Dictionary<CRarity, double>
             {
-                { CRarity.Common, 0.0146 },
-                { CRarity.Rare, 0.0138 },
-                { CRarity.Epic, 0.0031 },
-                { CRarity.Legendary, 0.0011 }
+                { CRarity.COMMON, 0.0146 },
+                { CRarity.RARE, 0.0138 },
+                { CRarity.EPIC, 0.0031 },
+                { CRarity.LEGENDARY, 0.0011 }
             });
 
         /// <summary>
@@ -121,46 +121,46 @@ namespace Hearthstone_Collection_Tracker.ViewModels
         private static readonly ReadOnlyDictionary<CRarity, double> AllCardProbabilitiesByRarity = new ReadOnlyDictionary<CRarity, double>(
             new Dictionary<CRarity, double>
             {
-                { CRarity.Common, 0.7143 },
-                { CRarity.Rare, 0.2278 },
-                { CRarity.Epic, 0.046 },
-                { CRarity.Legendary, 0.0119 }
+                { CRarity.COMMON, 0.7143 },
+                { CRarity.RARE, 0.2278 },
+                { CRarity.EPIC, 0.046 },
+                { CRarity.LEGENDARY, 0.0119 }
             });
 
         private static readonly ReadOnlyDictionary<CRarity, int> CardCraftValue = new ReadOnlyDictionary<CRarity, int>(
     new Dictionary<CRarity, int>
             {
-                { CRarity.Common, 40 },
-                { CRarity.Rare, 100 },
-                { CRarity.Epic, 400 },
-                { CRarity.Legendary, 1600 }
+                { CRarity.COMMON, 40 },
+                { CRarity.RARE, 100 },
+                { CRarity.EPIC, 400 },
+                { CRarity.LEGENDARY, 1600 }
             });
 
         private static readonly ReadOnlyDictionary<CRarity, int> GoldenCardCraftValue = new ReadOnlyDictionary<CRarity, int>(
     new Dictionary<CRarity, int>
             {
-                { CRarity.Common, 400 },
-                { CRarity.Rare, 800 },
-                { CRarity.Epic, 1600 },
-                { CRarity.Legendary, 3200 }
+                { CRarity.COMMON, 400 },
+                { CRarity.RARE, 800 },
+                { CRarity.EPIC, 1600 },
+                { CRarity.LEGENDARY, 3200 }
             });
 
         private static readonly ReadOnlyDictionary<CRarity, int> CardDisenchantValue = new ReadOnlyDictionary<CRarity, int>(
 new Dictionary<CRarity, int>
             {
-                { CRarity.Common, 5 },
-                { CRarity.Rare, 20 },
-                { CRarity.Epic, 100 },
-                { CRarity.Legendary, 400 }
+                { CRarity.COMMON, 5 },
+                { CRarity.RARE, 20 },
+                { CRarity.EPIC, 100 },
+                { CRarity.LEGENDARY, 400 }
             });
 
         private static readonly ReadOnlyDictionary<CRarity, int> GoldenCardDisenchantValue = new ReadOnlyDictionary<CRarity, int>(
     new Dictionary<CRarity, int>
             {
-                { CRarity.Common, 50 },
-                { CRarity.Rare, 100 },
-                { CRarity.Epic, 400 },
-                { CRarity.Legendary, 1600 }
+                { CRarity.COMMON, 50 },
+                { CRarity.RARE, 100 },
+                { CRarity.EPIC, 400 },
+                { CRarity.LEGENDARY, 1600 }
             });
         #endregion
 

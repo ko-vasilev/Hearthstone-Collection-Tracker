@@ -1,7 +1,7 @@
 ﻿using Hearthstone_Collection_Tracker.Internal;
 using Hearthstone_Collection_Tracker.ViewModels;
 using Hearthstone_Deck_Tracker;
-using Hearthstone_Deck_Tracker.Enums;
+using HearthDb.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;

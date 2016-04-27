@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DeckTracker|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\HearthstoneDeckTracker\Hearthstone Deck Tracker\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\HearthstoneDeckTrackerTemp\Hearthstone Deck Tracker\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,12 +45,16 @@
     </Win32Resource>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HearthDb">
+      <HintPath>..\..\HearthstoneDeckTrackerTemp\lib\HearthDb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\..\HearthstoneDeckTrackerTemp\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\HearthstoneDeckTrackerTemp\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -88,6 +92,8 @@
     <Compile Include="Internal\DataUpdaters\DataUpdaterV022.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV021.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV03.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV031.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV032.cs" />
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
     <Compile Include="Internal\Helpers.cs" />
@@ -161,14 +167,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HearthstoneDeckTracker\Hearthstone Deck Tracker\Hearthstone Deck Tracker.csproj">
+    <Resource Include="Internal\HSCollection.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HearthstoneDeckTrackerTemp\Hearthstone Deck Tracker\Hearthstone Deck Tracker.csproj">
       <Project>{e63a3f1c-e662-4e62-be43-af27cb9e953d}</Project>
       <Name>Hearthstone Deck Tracker</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Internal\HSCollection.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

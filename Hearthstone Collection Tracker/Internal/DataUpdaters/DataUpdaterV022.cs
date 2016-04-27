@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Hearthstone_Deck_Tracker.Enums;
+using HearthDb.Enums;
 
 namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
 {
@@ -77,7 +77,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                 {
                     foreach(var card in set.Cards)
                     {
-                        if (gameCards.First(c => c.Id == card.CardId).Rarity != Rarity.Legendary)
+                        if (gameCards.First(c => c.Id == card.CardId).Rarity != Rarity.LEGENDARY)
                             continue;
 
                         card.AmountGolden = Math.Min(card.AmountGolden, 1);
