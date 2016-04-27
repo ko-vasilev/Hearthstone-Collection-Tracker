@@ -122,7 +122,7 @@ namespace Hearthstone_Collection_Tracker
 
         private async void ButtonImportFromGame_Click(object sender, RoutedEventArgs e)
         {
-            const string message = "1) open My Collection in Hearthstone\n2) clear card filters\n3) do not move your mouse or type after clicking \"Import\"";
+            const string message = "1) open My Collection in Hearthstone\n2) clear card filters (make sure to change cards filter to All Cards)\n3) do not move your mouse or type after clicking \"Import\"";
 
             var settings = new MetroDialogSettings { AffirmativeButtonText = "Import" };
             var result =
