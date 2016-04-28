@@ -20,6 +20,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
                 if (args.PropertyName == "SetCards")
                 {
                     List<CardStatsByRarity> cardStats = SetCards.GroupBy(c => c.Card.Rarity, c => c)
+                        .OrderBy(g => (int)g.Key)
                         .Select(gr => new CardStatsByRarity(gr.Key.ToString(), gr.AsEnumerable()))
                         .ToList();
                     TotalSetStats = new CardStatsByRarity("Total", SetCards);
