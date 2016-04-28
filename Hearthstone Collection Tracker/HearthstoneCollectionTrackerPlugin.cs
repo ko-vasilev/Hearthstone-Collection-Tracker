@@ -38,6 +38,9 @@ namespace Hearthstone_Collection_Tracker
 
             Hearthstone_Deck_Tracker.API.DeckManagerEvents.OnDeckCreated.Add(HandleHearthstoneDeckUpdated);
             Hearthstone_Deck_Tracker.API.DeckManagerEvents.OnDeckUpdated.Add(HandleHearthstoneDeckUpdated);
+
+            _logManager = new AchievementLogManager(new AchievementLogReader());
+            _logManager.Run(new AchievementHandler(Settings.ActiveAccountSetsInfo));
         }
 
         private void HandleHearthstoneDeckUpdated(Deck deck)
@@ -110,6 +113,10 @@ namespace Hearthstone_Collection_Tracker
                     _settingsWindow.Close();
                 }
                 _settingsWindow = null;
+            }
+            if (_logManager != null)
+            {
+                _logManager.Stop();
             }
             Settings.SaveSettings(PluginDataDir);
         }
@@ -206,6 +213,8 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
         }
 
         public static PluginSettings Settings { get; set; }
+
+		private AchievementLogManager _logManager;
 
         #region Auto Update check implementation
 
