@@ -11,7 +11,9 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             new DataUpdaterV021(),
             new DataUpdaterV022(),
             new DataUpdaterV03(),
-            new DataUpdaterV031()
+            new DataUpdaterV031(),
+            new DataUpdaterV032(),
+            new DataUpdaterV04()
         };
 
         /// <summary>

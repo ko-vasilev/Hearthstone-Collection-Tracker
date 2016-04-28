@@ -48,13 +48,18 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             }
         }
 
+        public static int GetMaxAmountInCollection(Rarity rarity)
+        {
+            return rarity == Rarity.LEGENDARY ? 1 : 2;
+        }
+
         public int MaxAmountInCollection
         {
             get
             {
                 if (Card == null)
                     throw new ArgumentNullException();
-                return Card.Rarity == Rarity.LEGENDARY ? 1 : 2;
+                return GetMaxAmountInCollection(Card.Rarity);
             }
         }
 

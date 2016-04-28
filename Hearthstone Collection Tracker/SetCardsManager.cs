@@ -22,13 +22,34 @@ namespace Hearthstone_Collection_Tracker
                 {
                     var cards = Database.GetActualCards();
                     collection = setInfos;
-                    foreach (var setCollection in collection)
+                    foreach (var set in CollectableSets)
                     {
-                        foreach (var card in setCollection.Cards)
+                        var setInfo = setInfos.FirstOrDefault(si => si.SetName.Equals(set, StringComparison.InvariantCultureIgnoreCase));
+                        if (setInfo == null)
                         {
-                            card.Card = cards.First(c => c.Id == card.CardId);
-                            card.AmountGolden = card.AmountGolden.Clamp(0, card.MaxAmountInCollection);
-                            card.AmountNonGolden = card.AmountNonGolden.Clamp(0, card.MaxAmountInCollection);
+                            collection.Add(new BasicSetCollectionInfo()
+                            {
+                                SetName = set,
+                                Cards = cards.Where(c => c.Set.Equals(set, StringComparison.InvariantCultureIgnoreCase))
+                                            .Select(c => new CardInCollection()
+                                            {
+                                                AmountGolden = 0,
+                                                AmountNonGolden = 0,
+                                                Card = c,
+                                                CardId = c.Id,
+                                                DesiredAmount = CardInCollection.GetMaxAmountInCollection(c.Rarity)
+                                            })
+                                            .ToList()
+                            });
+                        }
+                        else
+                        {
+                            foreach (var card in setInfo.Cards)
+                            {
+                                card.Card = cards.First(c => c.Id == card.CardId);
+                                card.AmountGolden = card.AmountGolden.Clamp(0, card.MaxAmountInCollection);
+                                card.AmountNonGolden = card.AmountNonGolden.Clamp(0, card.MaxAmountInCollection);
+                            }
                         }
                     }
                 }
