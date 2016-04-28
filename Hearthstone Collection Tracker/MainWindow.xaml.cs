@@ -300,9 +300,6 @@ namespace Hearthstone_Collection_Tracker
                 int manaCostCompare = cardX.Card.Cost.CompareTo(cardY.Card.Cost);
                 if (manaCostCompare != 0)
                     return manaCostCompare;
-                int cardTypeCompare = cardX.Card.Type.CompareTo(cardY.Card.Type);
-                if (cardTypeCompare != 0)
-                    return -cardTypeCompare;
                 return cardX.Card.LocalizedName.CompareTo(cardY.Card.LocalizedName);
             }
             else
