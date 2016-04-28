@@ -88,6 +88,7 @@
       <DependentUpon>SetSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="HearthstoneCollectionTrackerPlugin.cs" />
+    <Compile Include="Internal\DataUpdaters\BaseUpdaterByVersion.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV02.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV022.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV021.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Internal\DataUpdaters\DataUpdaterV031.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV032.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV04.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV041.cs" />
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
     <Compile Include="Internal\Helpers.cs" />
