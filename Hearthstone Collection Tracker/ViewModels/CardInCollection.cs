@@ -19,6 +19,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             AmountNonGolden = amountNonGolden;
             AmountGolden = amountGolden;
             DesiredAmount = MaxAmountInCollection;
+            CardId = card.Id;
         }
 
         [XmlIgnore]

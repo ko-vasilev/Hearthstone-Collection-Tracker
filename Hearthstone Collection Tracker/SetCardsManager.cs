@@ -24,31 +24,31 @@ namespace Hearthstone_Collection_Tracker
                     collection = setInfos;
                     foreach (var set in CollectableSets)
                     {
+                        var currentSetCards = cards.Where(c => c.Set.Equals(set, StringComparison.InvariantCultureIgnoreCase));
                         var setInfo = setInfos.FirstOrDefault(si => si.SetName.Equals(set, StringComparison.InvariantCultureIgnoreCase));
                         if (setInfo == null)
                         {
                             collection.Add(new BasicSetCollectionInfo()
                             {
                                 SetName = set,
-                                Cards = cards.Where(c => c.Set.Equals(set, StringComparison.InvariantCultureIgnoreCase))
-                                            .Select(c => new CardInCollection()
-                                            {
-                                                AmountGolden = 0,
-                                                AmountNonGolden = 0,
-                                                Card = c,
-                                                CardId = c.Id,
-                                                DesiredAmount = CardInCollection.GetMaxAmountInCollection(c.Rarity)
-                                            })
-                                            .ToList()
+                                Cards = currentSetCards.Select(c => new CardInCollection(c)).ToList()
                             });
                         }
                         else
                         {
-                            foreach (var card in setInfo.Cards)
+                            foreach (var card in currentSetCards)
                             {
-                                card.Card = cards.First(c => c.Id == card.CardId);
-                                card.AmountGolden = card.AmountGolden.Clamp(0, card.MaxAmountInCollection);
-                                card.AmountNonGolden = card.AmountNonGolden.Clamp(0, card.MaxAmountInCollection);
+                                var savedCard = setInfo.Cards.FirstOrDefault(c => c.CardId == card.Id);
+                                if (savedCard == null)
+                                {
+                                    setInfo.Cards.Add(new CardInCollection(card));
+                                }
+                                else
+                                {
+                                    savedCard.Card = card;
+                                    savedCard.AmountGolden = savedCard.AmountGolden.Clamp(0, savedCard.MaxAmountInCollection);
+                                    savedCard.AmountNonGolden = savedCard.AmountNonGolden.Clamp(0, savedCard.MaxAmountInCollection);
+                                }
                             }
                         }
                     }
@@ -56,7 +56,7 @@ namespace Hearthstone_Collection_Tracker
             }
             catch (Exception ex)
             {
-                throw new Exception("File with your collection information is corrupted.");
+                throw new Exception("File with your collection information is corrupted.", ex);
             }
             return collection;
         }
