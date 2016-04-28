@@ -134,7 +134,7 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
-    <ScrollViewer Margin="0, 0, 2, 0">
+    <ScrollViewer Margin="0, 0, 2, 0" VerticalScrollBarVisibility="Auto">
         <WrapPanel HorizontalAlignment="Center" Name="MainWrapPanel">
             <ItemsControl x:Name="SetStats" Background="DarkGray" Foreground="White" HorizontalAlignment="Left" ItemsSource="{Binding SetsInfo}">
                 <ItemsControl.ItemTemplate>
