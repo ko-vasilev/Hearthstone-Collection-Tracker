@@ -66,7 +66,7 @@ namespace Hearthstone_Collection_Tracker
                 int missingAmount = Math.Max(0, deckCard.Count - (collectionCard.AmountGolden + collectionCard.AmountNonGolden));
                 if (missingAmount > 0)
                 {
-                    missingCards.Add(new Tuple<Card, int>(deckCard, missingAmount));
+                    missingCards.Add(new Tuple<Card, int>((Card) deckCard.Clone(), missingAmount));
                 }
             }
 
