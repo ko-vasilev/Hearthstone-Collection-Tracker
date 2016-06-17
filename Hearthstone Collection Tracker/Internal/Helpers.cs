@@ -14,6 +14,11 @@ namespace Hearthstone_Collection_Tracker.Internal
             return (value < min) ? min : (value > max) ? max : value;
         }
 
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source.IndexOf(toCheck, comp) >= 0;
+        }
+
         public static async Task<Version> GetLatestVersion()
         {
             const string latestReleaseRequestUrl =

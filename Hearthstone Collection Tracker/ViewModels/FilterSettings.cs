@@ -55,7 +55,7 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             set
             {
                 _text = value;
-                FormattedText = value == null ? null : Helper.RemoveDiacritics(value.ToLowerInvariant(), true);
+                FormattedText = value == null ? null : Helper.RemoveDiacritics(value, true);
                 OnPropertyChanged();
             }
         }

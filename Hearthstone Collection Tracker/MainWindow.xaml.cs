@@ -99,8 +99,9 @@ namespace Hearthstone_Collection_Tracker
                 return c.Card.Rarity == rarity;
             }
 
-            var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName.ToLowerInvariant(), true);
-            return cardName.Contains(Filter.FormattedText);
+            var cardName = Helper.RemoveDiacritics(c.Card.LocalizedName, true);
+            return cardName.Contains(Filter.FormattedText, StringComparison.OrdinalIgnoreCase)
+                || c.Card.AlternativeNames.Any(n => Helper.RemoveDiacritics(n, true).Contains(Filter.FormattedText, StringComparison.OrdinalIgnoreCase));
         }
 
         private CancellationTokenSource _filterCancel = new CancellationTokenSource();
