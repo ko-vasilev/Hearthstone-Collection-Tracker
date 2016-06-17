@@ -32,7 +32,21 @@ namespace Hearthstone_Collection_Tracker.ViewModels
 
         #region Properties
 
-        public string SetName { get; set; }
+        public bool IsStandardSet { get; private set; }
+
+        private string _setName;
+        public string SetName
+        {
+            get
+            {
+                return _setName;
+            }
+            set
+            {
+                _setName = value;
+                IsStandardSet = SetCardsManager.StandardSets.Contains(value);
+            }
+        }
 
         public static readonly DependencyProperty SetCardsProperty = DependencyProperty.Register("SetCards",
             typeof(TrulyObservableCollection<CardInCollection>), typeof(SetDetailInfoViewModel),

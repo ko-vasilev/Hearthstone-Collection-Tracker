@@ -56,18 +56,17 @@ namespace Hearthstone_Collection_Tracker
 
         private void EditCollection(SetDetailInfoViewModel setInfo)
         {
-            CardCollectionEditor.ItemsSource = setInfo.SetCards;
-
-            OpenCollectionFlyout();
+            OpenCollectionForEditing(setInfo.SetCards);
         }
 
         #region Collection management
 
         public FilterSettings Filter { get; set; }
 
-        private void OpenCollectionFlyout()
+        private void OpenCollectionForEditing(TrulyObservableCollection<CardInCollection> cards)
         {
-            ListCollectionView view = (ListCollectionView)CollectionViewSource.GetDefaultView(CardCollectionEditor.ItemsSource);
+            CardCollectionEditor.ItemsSource = cards;
+            ListCollectionView view = (ListCollectionView)CollectionViewSource.GetDefaultView(cards);
             view.Filter = CardsFilter;
             if (!view.GroupDescriptions.Any())
             {
@@ -276,6 +275,18 @@ namespace Hearthstone_Collection_Tracker
 
             MainWrapPanel.HorizontalAlignment = FlyoutCollection.IsOpen
                 ? HorizontalAlignment.Left : HorizontalAlignment.Center;
+        }
+
+        private void ManageAllCards_Click(object sender, RoutedEventArgs e)
+        {
+            var collection = new TrulyObservableCollection<CardInCollection>(SetsInfo.SelectMany(si => si.SetCards).ToList());
+            OpenCollectionForEditing(collection);
+        }
+
+        private void ManageStandardCards_Click(object sender, RoutedEventArgs e)
+        {
+            var collection = new TrulyObservableCollection<CardInCollection>(SetsInfo.Where(s => s.IsStandardSet).SelectMany(si => si.SetCards).ToList());
+            OpenCollectionForEditing(collection);
         }
     }
 
