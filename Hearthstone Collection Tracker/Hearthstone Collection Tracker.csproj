@@ -106,6 +106,7 @@
     <Compile Include="Internal\ModuleVersion.cs" />
     <Compile Include="Internal\PercentageConverter.cs" />
     <Compile Include="Internal\PluginSettings.cs" />
+    <Compile Include="Internal\ToUpperValueConverter.cs" />
     <Compile Include="Internal\TrulyObservableCollection.cs" />
     <Compile Include="Internal\VisibilityConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">

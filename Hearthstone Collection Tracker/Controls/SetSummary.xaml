@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <internal:PercentageConverter x:Key="PercentageConverter" />
         <internal:VisibilityConverter x:Key="VisibilityConverter" />
+        <internal:ToUpperValueConverter x:Key="ToUpperConverter" />
         <DataGridTemplateColumn x:Key="DesiredProgressColumn" Header="Desired"
                                 Visibility="{Binding Path=EnableDesiredCardsFeature, Source={x:Static hct:HearthstoneCollectionTrackerPlugin.Settings}, Converter={StaticResource VisibilityConverter}}">
             <DataGridTemplateColumn.CellTemplate>
@@ -32,7 +33,11 @@
             </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
     </UserControl.Resources>
-    <GroupBox Header="{Binding SetName}">
+    <Expander IsExpanded="True">
+        <Expander.Header>
+            <TextBlock Text="{Binding SetName, Converter={StaticResource ToUpperConverter}}"
+                       Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=ActualWidth}" />
+        </Expander.Header>
         <StackPanel>
             <DataGrid IsReadOnly="True" Grid.IsSharedSizeScope="True" ItemsSource="{Binding StatsByRarity}" CanUserAddRows="False"
                   CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"
@@ -108,5 +113,5 @@
                 <TextBlock Text="{Binding TotalSetStats.CraftGoldenDustRequired}" Foreground="DarkOrange" ToolTip="Dust required to craft golden cards" />
             </TextBlock>
         </StackPanel>
-    </GroupBox>
+    </Expander>
 </UserControl>
