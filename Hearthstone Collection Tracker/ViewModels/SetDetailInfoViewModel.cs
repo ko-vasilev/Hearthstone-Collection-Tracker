@@ -48,6 +48,14 @@ namespace Hearthstone_Collection_Tracker.ViewModels
             }
         }
 
+        public string SetDisplayingName
+        {
+            get
+            {
+                return IsStandardSet ? SetName : SetName + " (Wild)";
+            }
+        }
+
         public static readonly DependencyProperty SetCardsProperty = DependencyProperty.Register("SetCards",
             typeof(TrulyObservableCollection<CardInCollection>), typeof(SetDetailInfoViewModel),
             new PropertyMetadata(new TrulyObservableCollection<CardInCollection>()));
