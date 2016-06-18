@@ -11,9 +11,9 @@
         Icon="Internal\HSCollection.ico"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        ContentRendered="MainWindow_OnContentRendered" Closed="MainWindow_OnClosed">
+        ContentRendered="MainWindow_OnContentRendered" Closed="MainWindow_OnClosed" Name="PluginWindow">
     <controls:MetroWindow.Flyouts>
-        <controls:FlyoutsControl Margin="{Binding TitleBarMargin, RelativeSource={RelativeSource AncestorType=local:MainWindow}}">
+        <controls:FlyoutsControl Margin="{Binding TitleBarMargin, ElementName=PluginWindow}">
             <controls:Flyout x:Name="FlyoutCollection" Position="Right" Panel.ZIndex="102" Header="Collection"
                              MaxWidth="285" IsOpenChanged="FlyoutCollection_OnIsOpenChanged">
                 <Border Margin="5, 5, 0, 0" BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
@@ -37,6 +37,12 @@
                               VirtualizingStackPanel.VirtualizationMode="Recycling"
                               KeyDown="CardCollectionEditor_OnKeyDown" MouseLeftButtonUp="CardCollectionEditor_OnMouseLeftButtonUp"
                               MouseRightButtonUp="CardCollectionEditor_OnMouseRightButtonUp" HorizontalContentAlignment="Left">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel>
+                                    </VirtualizingStackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
                             <ListView.Style>
                                 <Style TargetType="ListView">
                                     <Style.Triggers>
@@ -93,7 +99,7 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
-                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="20"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <DTcontrols:Card DataContext="{Binding Card}" Grid.Column="0"></DTcontrols:Card>
                                         <hearthstoneDeckTracker:OutlinedTextBlock Width="28" Height="25"
@@ -107,11 +113,7 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Value="True">
                                                             <DataTrigger.Binding>
-                                                                <Binding Path="Filter.GoldenCards">
-                                                                    <Binding.RelativeSource>
-                                                                        <RelativeSource Mode="FindAncestor" AncestorType="Window">
-                                                                        </RelativeSource>
-                                                                    </Binding.RelativeSource>
+                                                                <Binding Path="Filter.GoldenCards" ElementName="PluginWindow">
                                                                 </Binding>
                                                             </DataTrigger.Binding>
                                                             <Setter Property="Text" Value="{Binding AmountGolden}"></Setter>
