@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:internal="clr-namespace:Hearthstone_Collection_Tracker.Internal"
              xmlns:hct="clr-namespace:Hearthstone_Collection_Tracker"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="250">
     <UserControl.Resources>
@@ -41,10 +40,7 @@
         <StackPanel>
             <DataGrid IsReadOnly="True" Grid.IsSharedSizeScope="True" ItemsSource="{Binding StatsByRarity}" CanUserAddRows="False"
                   CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"
-                  CanUserSortColumns="False" AutoGenerateColumns="False">
-                <i:Interaction.Behaviors>
-                    <internal:IgnoreMouseWheelBehavior />
-                </i:Interaction.Behaviors>
+                  CanUserSortColumns="False" AutoGenerateColumns="False" PreviewMouseWheel="DataGrid_PreviewMouseWheel">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Rarity" Binding="{Binding Rarity}"></DataGridTextColumn>
                     <DataGridTemplateColumn Header="Card Progress">
