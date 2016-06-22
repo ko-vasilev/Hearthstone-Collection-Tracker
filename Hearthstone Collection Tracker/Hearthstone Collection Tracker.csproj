@@ -96,6 +96,7 @@
     <Compile Include="Internal\DataUpdaters\DataUpdaterV031.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV032.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV04.cs" />
+    <Compile Include="Internal\DataUpdaters\DataUpdaterV05.cs" />
     <Compile Include="Internal\DataUpdaters\DataUpdaterV041.cs" />
     <Compile Include="Internal\DataUpdaters\DefaultDataUpdater.cs" />
     <Compile Include="Internal\DataUpdaters\IDataUpdater.cs" />
