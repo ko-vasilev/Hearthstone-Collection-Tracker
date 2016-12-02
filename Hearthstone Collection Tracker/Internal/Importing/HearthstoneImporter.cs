@@ -96,7 +96,7 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
                     }
                 }
             }
-            catch (ImportingException e)
+            catch (ImportingException)
             {
                 ShowHDTOverlay();
                 throw;
