@@ -34,7 +34,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
 
                     return currentVersion < new ModuleVersion(Version);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
