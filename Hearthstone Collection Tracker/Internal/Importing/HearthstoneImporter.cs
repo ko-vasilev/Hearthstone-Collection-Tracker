@@ -3,12 +3,15 @@ using Hearthstone_Deck_Tracker;
 using Hearthstone_Deck_Tracker.Hearthstone;
 using Hearthstone_Deck_Tracker.Utility;
 using Hearthstone_Deck_Tracker.Utility.Logging;
+using HearthMirror;
+using HearthMirror.Objects;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Hearthstone_Collection_Tracker.Internal.Importing
 {
@@ -47,56 +50,23 @@ namespace Hearthstone_Collection_Tracker.Internal.Importing
             {
                 HideHDTOverlay();
 
-                HearthstoneWindow = User32.GetHearthstoneWindow();
-
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    //restore window and bring to foreground
-                    User32.ShowWindow(HearthstoneWindow, User32.SwRestore);
-                    User32.SetForegroundWindow(HearthstoneWindow);
-                    //wait it to actually be in foreground, else the rect might be wrong
-                    await Task.Delay(500);
-                }
-                if (!User32.IsHearthstoneInForeground())
-                {
-                    Log.WriteLine("Can't find Hearthstone window.", LogType.Info, LOGGER_CATEGORY);
-                    throw new ImportingException("Can't find Hearthstone window.");
-                }
-
-                Log.WriteLine("Waiting for " + ImportStepDelay * 3 + " milliseconds before starting the collection import", LogType.Info, LOGGER_CATEGORY);
-                await Task.Delay(ImportStepDelay * 3);
-
-                var hsRect = User32.GetHearthstoneRect(false);
-                WindowXRatioTo1920 = (double)hsRect.Width / 1920;
-                WindowYRatioTo1080 = (double)hsRect.Height / 1080;
-                var ratio = (4.0 / 3.0) / ((double)hsRect.Width / hsRect.Height);
-
-                SearchBoxPosition = new Point((int)(GetXPos(Config.Instance.ExportSearchBoxX, hsRect.Width, ratio)),
-                    (int)(Config.Instance.ExportSearchBoxY * hsRect.Height));
-                var cardPosX = GetXPos(Config.Instance.ExportCard1X, hsRect.Width, ratio);
-                var card2PosX = GetXPos(Config.Instance.ExportCard2X, hsRect.Width, ratio);
-                var cardPosY = Config.Instance.ExportCardsY * hsRect.Height;
+                var collection = Reflection.GetCollection();
+                var goldenCollection = Reflection.GetCollection().Where(x => x.Premium == true);
+                var commonCollection = Reflection.GetCollection().Where(x => x.Premium == false);
 
                 foreach (var set in sets)
                 {
                     foreach (var card in set.Cards)
                     {
-                        var amount = await GetCardsAmount(card.Card, cardPosX, card2PosX, cardPosY);
-                        int amountNonGolden = amount.Item1;
-                        int amountGolden = amount.Item2;
-                        if (NonGoldenFirst && amountNonGolden < card.MaxAmountInCollection && amountGolden > 0)
-                        {
-                            int missing = card.MaxAmountInCollection - amountNonGolden;
-                            int transferAmount = Math.Min(amountGolden, missing);
-                            amountGolden -= transferAmount;
-                            amountNonGolden += transferAmount;
-                        }
+                        var amountGolden = goldenCollection.Where(x => x.Id.Equals(card.CardId)).Select(x => x.Count).FirstOrDefault();
+                        var amountNonGolden = commonCollection.Where(x => x.Id.Equals(card.CardId)).Select(x=> x.Count).FirstOrDefault();
+                        
                         card.AmountNonGolden = Math.Min(amountNonGolden, card.MaxAmountInCollection);
                         card.AmountGolden = Math.Min(amountGolden, card.MaxAmountInCollection);
-                    }
-                }
+                    }                    
+                }                
             }
-            catch (ImportingException e)
+            catch (ImportingException)
             {
                 ShowHDTOverlay();
                 throw;

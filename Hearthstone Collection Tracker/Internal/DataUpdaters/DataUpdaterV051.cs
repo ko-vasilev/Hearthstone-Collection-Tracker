@@ -1,13 +1,15 @@
-﻿using System;
+using HearthDb.Enums;
+using Hearthstone_Deck_Tracker;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
 {
-    public class DataUpdaterV021 : IDataUpdater
+    class DataUpdaterV051 : IDataUpdater
     {
-        private static readonly Version _version = new Version(0, 2, 1);
+        private static readonly Version _version = new Version(0, 5, 1);
 
         public Version Version
         {
@@ -37,43 +39,42 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                     var settings = Hearthstone_Deck_Tracker.XmlManager<PluginSettings>.Load(configFilePath);
                     return settings.CurrentVersion < new ModuleVersion(_version);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return false;
                 }
             }
         }
 
-        private const string DreadscaleCardId = "AT_063t";
-
         public void PerformUpdate()
         {
-            var configFilePath = ConfigFilePath;
-            var settings = Hearthstone_Deck_Tracker.XmlManager<PluginSettings>.Load(configFilePath);
-            // add Dreadscale to each account
-            foreach (var account in settings.Accounts)
+            const string MSoGSet = "Mean Streets of Gadgetzan";
+            // iterate over each collection and add MSoG cards
+            foreach (var file in Directory.GetFiles(HearthstoneCollectionTrackerPlugin.PluginDataDir, "Collection_*.xml", SearchOption.TopDirectoryOnly))
             {
-                if (!File.Exists(account.FileStoragePath))
-                {
+                var setInfos = XmlManager<List<BasicSetCollectionInfo>>.Load(file);
+                if (setInfos.Any(s => s.SetName == MSoGSet))
                     continue;
-                }
-                var setsInfo = Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Load(account.FileStoragePath);
-                var TGTSet = setsInfo.FirstOrDefault(s => s.SetName == "The Grand Tournament");
-                if (TGTSet == null)
+                var cards = Hearthstone_Deck_Tracker.Hearthstone.Database.GetActualCards();
+                // add MSoG cards
+                setInfos.Add(new BasicSetCollectionInfo()
                 {
-                    continue;
-                }
-                TGTSet.Cards.Add(new CardInCollection()
-                {
-                    AmountGolden = 0,
-                    AmountNonGolden = 0,
-                    CardId = DreadscaleCardId,
-                    DesiredAmount = 1
+                    SetName = MSoGSet,
+                    Cards = cards.Where(c => c.Set == MSoGSet).Select(c => new CardInCollection()
+                    {
+                        AmountGolden = 0,
+                        AmountNonGolden = 0,
+                        CardId = c.Id,
+                        DesiredAmount = c.Rarity == Rarity.LEGENDARY ? 1 : 2
+                    }).ToList()
                 });
-                Hearthstone_Deck_Tracker.XmlManager<List<BasicSetCollectionInfo>>.Save(account.FileStoragePath, setsInfo);
+                XmlManager<List<BasicSetCollectionInfo>>.Save(file, setInfos);
             }
+
+            var configFilePath = ConfigFilePath;
+            var settings = XmlManager<PluginSettings>.Load(configFilePath);
             settings.CurrentVersion = new ModuleVersion(_version);
-            Hearthstone_Deck_Tracker.XmlManager<PluginSettings>.Save(configFilePath, settings);
+            XmlManager<PluginSettings>.Save(configFilePath, settings);
         }
 
         [Serializable]
@@ -92,14 +93,8 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
             public bool DefaultShowAllCards { get; set; }
 
             public bool NotifyNewDeckMissingCards { get; set; }
-        }
 
-        [Serializable]
-        public class AccountSummary
-        {
-            public string AccountName { get; set; }
-
-            public string FileStoragePath { get; set; }
+            public bool EnableDesiredCardsFeature { get; set; }
         }
 
         public class BasicSetCollectionInfo

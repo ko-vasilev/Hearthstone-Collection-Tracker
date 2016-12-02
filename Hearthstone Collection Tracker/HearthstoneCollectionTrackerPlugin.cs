@@ -111,7 +111,10 @@ namespace Hearthstone_Collection_Tracker
                 }
                 _settingsWindow = null;
             }
-            Settings.SaveSettings(PluginDataDir);
+            if (Settings != null)
+            {
+                Settings.SaveSettings(PluginDataDir);
+            }
         }
 
         public void OnButtonPress()
@@ -161,7 +164,7 @@ Suggestions and bug reports can be sent to https://github.com/ko-vasilev/Hearths
             get { return "Vasilev Konstantin"; }
         }
 
-        public static readonly Version PluginVersion = new Version(0, 5, 0);
+        public static readonly Version PluginVersion = new Version(0, 5, 1);
 
         public Version Version
         {
