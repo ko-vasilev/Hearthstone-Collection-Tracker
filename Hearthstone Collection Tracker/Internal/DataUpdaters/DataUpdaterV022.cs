@@ -38,7 +38,7 @@ namespace Hearthstone_Collection_Tracker.Internal.DataUpdaters
                     var settings = Hearthstone_Deck_Tracker.XmlManager<PluginSettings>.Load(configFilePath);
                     return settings.CurrentVersion < new ModuleVersion(_version);
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     return false;
                 }
